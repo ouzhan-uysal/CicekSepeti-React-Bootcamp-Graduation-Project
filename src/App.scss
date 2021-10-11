@@ -1,0 +1,22 @@
+body {
+  #root {
+    // display: grid;
+    // // grid-template-areas: "header" "footer";
+    // grid-template-rows: 1fr 15%; // vertical area
+    // grid-template-columns: 1fr; // horizontal area
+    // height: 100vh;
+    // margin: 0;
+    // padding: 0;
+  }
+}
+
+
+@media all and (max-width: 575px) {
+  body {
+    // grid-template-areas:
+    //   "header"
+    //   "footer";
+    // grid-template-rows: 1fr 15%;
+    // grid-template-columns: 1fr;
+  }
+}

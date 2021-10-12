@@ -4,9 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { setAutorizationToken } from './helpers/setAuthorizationToken';
+// redux config
+import { Provider } from 'react-redux';
+import store from './helpers/store';
+
+const jwtToken = localStorage.geTItem("jwtToken");
+if (jwtToken) {
+  setAutorizationToken(jwtToken);
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

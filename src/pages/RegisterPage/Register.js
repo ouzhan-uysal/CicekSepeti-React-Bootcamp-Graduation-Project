@@ -48,7 +48,7 @@ const Register = () => {
               <input type="password" id="registerPassword" placeholder="Password" value={userPassword} onChange={(e) => { setUserPassword(e.target.value) }} />
               <button onClick={registerBtn}>Kayıt Ol</button>
             </form>
-            <p>Hesabınız var mı? <a onClick={goLogin}>Giriş Yap</a></p>
+            <p>Hesabınız var mı? <span onClick={goLogin}>Giriş Yap</span></p>
           </div>
         </div>
       </RegisterWrapper>

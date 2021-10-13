@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { LoginWrapper } from './LoginSC';
 
@@ -7,25 +7,40 @@ const Login = () => {
   const [userPassword, setUserPassword] = useState("");
   let history = useHistory();
 
+  // if already login --> routing index page
+  useEffect(() => {
+    if (localStorage.getItem('user-info')) {
+      history.push("/home")
+    }
+  }, [])
+
   const goRegister = () => {
     history.push("/register");
   }
-  const goIndexPage = () => {
-    history.push("/");
-  }
 
-  const loginBtn = e => {
+  const loginBtn = async e => {
     e.preventDefault();
-    if (userEmail.includes("@")) {
-      // if: email and pass is correct --> routing home page
-      if (8 < userPassword.length && userPassword.length < 20) {
-        alert("register successful")
-        goIndexPage();
-      } else {  // else: give a alert
-        alert("Hatalı Email veya Şifre")
-      }
+    let result = await fetch("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
+      method: 'POST',
+      headers: {
+        "access-control-allow-origin": "*",
+        "content-length": "43",
+        "content-type": "application/json; charset=utf-8",
+        "date": "Wed,13 Oct 2021 17:41:52 GMT",
+        "etag": "2b-hGShxOkieaAVDloBubJVM+h58D8",
+        "server": "istio - envoy",
+        "x-envoy-upstream-service-time": "89",
+        "x-powered-by": "Express",
+      },
+      body: JSON.stringify({ email: userEmail, password: userPassword })
+    });
+    if (result.status === 201) {
+      console.log(result)
+      result = await result.json();
+      localStorage.setItem("user-info", JSON.stringify(result));
+      history.push("/home")
     } else {
-      alert("Geçerli bir Eposta giriniz.")
+      alert("Erişim Reddi.")
     }
   }
 
@@ -49,7 +64,7 @@ const Login = () => {
               <input type="password" id="loginPassword" placeholder="Password" value={userPassword} onChange={(e) => { setUserPassword(e.target.value) }} />
               <button type="click" onClick={loginBtn}>Giriş Yap</button>
             </form>
-            <p>Hesabınız yok mu? <a onClick={goRegister}>Kayıt Ol</a></p>
+            <p>Hesabınız yok mu? <span onClick={goRegister}>Kayıt Ol</span></p>
           </div>
         </div>
       </LoginWrapper>

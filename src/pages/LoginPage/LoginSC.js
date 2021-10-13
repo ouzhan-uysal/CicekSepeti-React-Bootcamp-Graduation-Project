@@ -31,7 +31,7 @@ export const LoginWrapper = Styled.div`
           font-size: 2em;
           font-weight: 800;
         }
-        a {
+        span {
           color: #4B9CE2;
           cursor: pointer;
         }

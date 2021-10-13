@@ -11,6 +11,8 @@ export const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_PRODUCT:
       return { ...state, products: [...state.products, action.payload] }
+    case DELETE_PRODUCT:
+      return { ...state }
     default:
       return { ...state }
   }

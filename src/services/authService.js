@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { setAutorizationToken } from '../helpers/setAuthorizationToken';
+import { setAuthorizationToken } from '../helpers/setAuthorizationToken';
 
 const login = (username, password) => {
   return axios.post("http://localhost:3000/account/login", { username, password })
@@ -9,7 +9,7 @@ const login = (username, password) => {
       if (user.data.status) {
         const { token } = user.data;
         localStorage.setItem("jwtToken", token);
-        setAutorizationToken(token);
+        setAuthorizationToken(token);
       }
       return user.data;
     })

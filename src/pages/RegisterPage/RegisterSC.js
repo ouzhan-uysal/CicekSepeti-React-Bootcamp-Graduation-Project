@@ -33,6 +33,7 @@ export const RegisterWrapper = Styled.div`
         }
         a {
           color: #4B9CE2;
+          cursor: pointer;
         }
       }
       form {
@@ -48,6 +49,7 @@ export const RegisterWrapper = Styled.div`
           background-color: #4B9CE2;
           color: #fff;
           height: 2em;
+          cursor: pointer;
         }
         input {
           color: #99A0A7;

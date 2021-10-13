@@ -35,7 +35,7 @@ const Home = () => {
               <span>Renk: Lacivert</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -47,7 +47,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -59,7 +59,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -71,7 +71,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -83,7 +83,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -95,7 +95,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -107,7 +107,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -119,7 +119,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -131,7 +131,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
           <div className="product-item">
@@ -143,7 +143,7 @@ const Home = () => {
               <span>Renk</span>
             </div>
             <div className="product-price">
-              <p>Fiyat</p>
+              <p>1.999,00 TL</p>
             </div>
           </div>
         </div>

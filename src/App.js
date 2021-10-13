@@ -10,6 +10,7 @@ import MainWrapper from './AppSC';
 import Login from './pages/LoginPage/Login'
 import Register from './pages/RegisterPage/Register';
 import Home from './pages/HomePage/Home';
+import Account from './pages/AccountPage/Account';
 
 // import PrivateRoute from './components/privateRoute';
 
@@ -19,10 +20,10 @@ function App() {
     <MainWrapper>
       <Router>
         <Switch>
-          <Route path="/" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
-          <Route path="/home" component={Home} />
+          <Route path="/account" component={Account} />
+          <Route path="/" component={Home} />
         </Switch>
       </Router>
     </MainWrapper>

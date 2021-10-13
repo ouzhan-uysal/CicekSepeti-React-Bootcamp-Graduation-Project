@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { LoginWrapper } from './LoginSC';
 
@@ -14,30 +15,22 @@ const Login = () => {
     }
   }, [])
 
-  const goRegister = () => {
-    history.push("/register");
-  }
-
   const loginBtn = async e => {
     e.preventDefault();
-    let result = await fetch("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
+    const response = await axios.get("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
       method: 'POST',
       headers: {
         "access-control-allow-origin": "*",
-        "content-length": "43",
         "content-type": "application/json; charset=utf-8",
-        "date": "Wed,13 Oct 2021 17:41:52 GMT",
         "etag": "2b-hGShxOkieaAVDloBubJVM+h58D8",
-        "server": "istio - envoy",
-        "x-envoy-upstream-service-time": "89",
+        "server": "istio-envoy",
+        "x-envoy-upstream-service-time": 82,
         "x-powered-by": "Express",
       },
       body: JSON.stringify({ email: userEmail, password: userPassword })
     });
-    if (result.status === 201) {
-      console.log(result)
-      result = await result.json();
-      localStorage.setItem("user-info", JSON.stringify(result));
+    if (response.status === 201 || response.status === 200) {
+      localStorage.setItem("user-info", JSON.stringify(response));
       history.push("/home")
     } else {
       alert("Erişim Reddi.")
@@ -64,7 +57,7 @@ const Login = () => {
               <input type="password" id="loginPassword" placeholder="Password" value={userPassword} onChange={(e) => { setUserPassword(e.target.value) }} />
               <button type="click" onClick={loginBtn}>Giriş Yap</button>
             </form>
-            <p>Hesabınız yok mu? <span onClick={goRegister}>Kayıt Ol</span></p>
+            <p>Hesabınız yok mu? <span onClick={() => history.push("/register")}>Kayıt Ol</span></p>
           </div>
         </div>
       </LoginWrapper>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 import { useHistory } from 'react-router-dom';
 import { RegisterWrapper } from './RegisterSC';
 
@@ -7,19 +8,37 @@ const Register = () => {
   const [userPassword, setUserPassword] = useState("");
   let history = useHistory();
 
-  const goLogin = () => {
-    history.push("/login");
-  }
-  const goIndexPage = () => {
-    history.push("/");
-  }
-  const registerBtn = e => {
+  // if already login --> routing index page
+  useEffect(() => {
+    if (localStorage.getItem('user-info')) {
+      history.push("/home")
+    }
+  }, [])
+
+  const registerBtn = async e => {
     e.preventDefault();
     if (userEmail.includes("@")) {
       // if: email and pass is correct --> routing home page
       if (8 < userPassword.length && userPassword.length < 20) {
-        alert("register successful")
-        goIndexPage();
+        e.preventDefault();
+        const response = await axios.get("http://bootcampapi.techcs.io/api/fe/v1/authorization/signup", {
+          method: 'POST',
+          headers: {
+            "access-control-allow-origin": "*",
+            "content-type": "application/json; charset=utf-8",
+            "etag": "85-lGOXsaD09ymuXCUTFYyhvjG54pQ",
+            "server": "istio-envoy",
+            "x-envoy-upstream-service-time": 2,
+            "x-powered-by": "Express",
+          },
+          body: JSON.stringify({ email: userEmail, password: userPassword })
+        });
+        if (response.status === 201 || response.status === 200) {
+          localStorage.setItem("user-info", JSON.stringify(response));
+          history.push("/home")
+        } else {
+          alert("Erişim Reddi.")
+        }
       } else {  // else: give a alert
         alert("Hatalı Email veya Şifre")
       }
@@ -48,7 +67,7 @@ const Register = () => {
               <input type="password" id="registerPassword" placeholder="Password" value={userPassword} onChange={(e) => { setUserPassword(e.target.value) }} />
               <button onClick={registerBtn}>Kayıt Ol</button>
             </form>
-            <p>Hesabınız var mı? <span onClick={goLogin}>Giriş Yap</span></p>
+            <p>Hesabınız var mı? <span onClick={() => history.push("/login")}>Giriş Yap</span></p>
           </div>
         </div>
       </RegisterWrapper>

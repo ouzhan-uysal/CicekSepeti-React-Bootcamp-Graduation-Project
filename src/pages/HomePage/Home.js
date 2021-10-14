@@ -1,14 +1,33 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import Header from './Header';
 import { HomeWrapper } from './HomeSC';
 
 const Home = () => {
+  const [products, setProducts] = useState([]);
+
+  const getProducts = async () => {
+    const response = await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/category/all", {
+      method: "GET",
+      headers: {
+        "etag": "2b-hGShxOkieaAVDloBubJVM+h58D8",
+      }
+    });
+    // console.log(response)
+    if (response.status === 200) {
+      setProducts(response.data);
+    } else {
+      alert("API'den ürün çekilemedi.")
+    }
+  }
+
   return (
     <>
       <Header />
       <HomeWrapper>
         <img className="poster" src="/banner1.png" alt="banner" />
         <div className="category-container">
+          <button onClick={getProducts}>GET PRODUCTS</button>
           <ul>
             <li>Hepsi<hr /></li>
             <li>Pantolon<hr /></li>
@@ -28,6 +47,9 @@ const Home = () => {
           </ul>
         </div>
         <div className="product-container">
+          {/* 
+            products.map
+          */}
           <div className="product-item">
             <img src="/image5.png" alt="img" />
             <div className="product-info">
@@ -38,6 +60,7 @@ const Home = () => {
               <p>1.999,00 TL</p>
             </div>
           </div>
+
           <div className="product-item">
             <div className="product-img">
               <img src="/image5.png" alt="img" />

@@ -4,9 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  // Link
 } from "react-router-dom";
-import MainWrapper from './AppSC';
 import Login from './pages/LoginPage/Login'
 import Register from './pages/RegisterPage/Register';
 import Home from './pages/HomePage/Home';
@@ -17,7 +15,7 @@ import Account from './pages/AccountPage/Account';
 
 function App() {
   return (
-    <MainWrapper>
+    <>
       <Router>
         <Switch>
           <Route path="/register" component={Register} />
@@ -26,7 +24,7 @@ function App() {
           <Route path="/" component={Home} />
         </Switch>
       </Router>
-    </MainWrapper>
+    </>
   );
 }
 

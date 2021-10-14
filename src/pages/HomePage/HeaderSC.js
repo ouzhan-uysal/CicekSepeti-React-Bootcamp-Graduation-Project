@@ -5,13 +5,14 @@ export const HeaderWrapper = Styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-items: center;
   padding: 1em;
+  margin: 0 10rem;
   .header-logo {
     width: 130px;
     heght: 50px;
   }
   .header-btn {
+    text-align: end;
     button {
       background-color: #F0F8FF;
       margin-left: 1em;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { RegisterWrapper } from './RegisterSC';
 
@@ -10,12 +11,12 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   let history = useHistory();
 
+
   // if already login --> routing index page
   useEffect(() => {
-    if (localStorage.getItem('user-info')) {
-      history.push("/home")
-    }
-  }, [])
+    Cookies.get('token') && history.push("/home")
+    // localStorage.getItem('user-info') && history.push("/home")
+  }, [loading])
   /*
   deneme@gmail.com  123123123
    */
@@ -34,9 +35,8 @@ const Register = () => {
           password: userPassword
         }).then(response => {
           setLoading(false);
-          console.log("Response: ", response)
-          // document.cookie = "token=" + response.data;
-          // console.log("Token: ", document.cookie)
+          // console.log("Response: ", response)
+          document.cookie = "token=" + response.data['access_token'];
         }).catch(error => {
           setLoading(false);
           if (error.response.status === 401 || error.response.status === 400) {

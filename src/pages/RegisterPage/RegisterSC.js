@@ -2,9 +2,9 @@ import Styled from 'styled-components';
 
 export const RegisterWrapper = Styled.div`
   display: grid;
-  grid-template-columns: 1fr 59%;
+  grid-template-columns: auto auto;
   .main-img {
-    display: grid;
+    max-height: 100vh;
     img {
       max-width:100%;
       max-height:100%;

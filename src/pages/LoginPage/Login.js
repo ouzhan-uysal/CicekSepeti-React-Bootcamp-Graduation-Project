@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { LoginWrapper } from './LoginSC';
 
@@ -13,21 +14,21 @@ const Login = () => {
 
   // if already login --> routing index page
   useEffect(() => {
-    localStorage.getItem('user-info') && history.push("/home")
-  }, [])
+    Cookies.get('token') && history.push("/home")
+    // localStorage.getItem('user-info') && history.push("/home")
+  }, [loading])
 
   const loginBtn = async e => {
     e.preventDefault();
-    console.log("email: ", userEmail);
-    console.log("pass: ", userPassword);
     setError(null);
     setLoading(true);
     await axios.post("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
-      email: "string",
-      password: "string"
+      email: userEmail,
+      password: userPassword
     }).then(response => {
       setLoading(false);
-      console.log("Response: ", response)
+      // console.log("Response: ", response)
+      document.cookie = "token=" + response.data['access_token'];
     }).catch(error => {
       setLoading(false);
       if(error.response.status === 401 || error.response.status === 400) {

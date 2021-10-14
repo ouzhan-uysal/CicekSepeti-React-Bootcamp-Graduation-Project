@@ -1,17 +1,18 @@
 import Styled from 'styled-components';
 
 export const HeaderWrapper = Styled.div`
-  background-color: #fff;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
+  background-color: #fff;
   align-items: center;
   padding: 1em;
-  margin: 0 10rem;
   .header-logo {
+    margin: 0 10rem;
     width: 130px;
     heght: 50px;
   }
   .header-btn {
+    margin: 0 10rem;
     text-align: end;
     button {
       background-color: #F0F8FF;

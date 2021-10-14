@@ -6,35 +6,43 @@ import { LoginWrapper } from './LoginSC';
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   let history = useHistory();
 
   // if already login --> routing index page
   useEffect(() => {
-    if (localStorage.getItem('user-info')) {
-      history.push("/home")
-    }
+    localStorage.getItem('user-info') && history.push("/home")
   }, [])
 
   const loginBtn = async e => {
     e.preventDefault();
-    const response = await axios.get("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
-      method: 'POST',
-      headers: {
-        "access-control-allow-origin": "*",
-        "content-type": "application/json; charset=utf-8",
-        "etag": "2b-hGShxOkieaAVDloBubJVM+h58D8",
-        "server": "istio-envoy",
-        "x-envoy-upstream-service-time": 82,
-        "x-powered-by": "Express",
-      },
-      body: JSON.stringify({ email: userEmail, password: userPassword })
+    console.log("email: ", userEmail);
+    console.log("pass: ", userPassword);
+    setError(null);
+    setLoading(true);
+    await axios.post("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
+      email: "string",
+      password: "string"
+    }).then(response => {
+      setLoading(false);
+      console.log("Response: ", response)
+    }).catch(error => {
+      setLoading(false);
+      if(error.response.status === 401 || error.response.status === 400) {
+        setError(error.response.data.message)
+      } else {
+        setError("Something went wrong. Please try again later.");
+      }
     });
-    if (response.status === 201 || response.status === 200) {
-      localStorage.setItem("user-info", JSON.stringify(response));
-      history.push("/home")
-    } else {
-      alert("Erişim Reddi.")
-    }
+    // console.log("Response: ", response)
+    // if (response.status === 200) {
+    //   localStorage.setItem("user-info", JSON.stringify(response));
+    //   history.push("/home");
+    // } else {
+    //   alert("Erişim Reddi.");
+    // }
   }
 
   return (

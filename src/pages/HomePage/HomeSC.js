@@ -2,12 +2,12 @@ import Styled from 'styled-components';
 
 export const HomeWrapper = Styled.div`
   display: grid;
-  grid-template-rows: 40vh 5vh 1fr;
-  grid-template-columns: 70%;
+  grid-template-rows: repeat(auto-fill, minmax(auto, 1fr));
   justify-content: center;
   background-color: #F2F2F2;
+  margin: 0 10rem;
   .poster {
-    margin: 1em;
+    margin: 1em 0;
     max-width: 100%;
     max-height: 100%;
   }
@@ -31,7 +31,7 @@ export const HomeWrapper = Styled.div`
   }
   .product-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(14em, 1fr));
     .product-item {
       background-color: #fff;
       border-radius: .5em;

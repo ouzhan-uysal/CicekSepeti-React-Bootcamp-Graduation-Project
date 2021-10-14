@@ -1,23 +1,37 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { HomeWrapper } from './HomeSC';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const getProducts = async () => {
-    const response = await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/category/all", {
-      method: "GET",
-      headers: {
-        "etag": "2b-hGShxOkieaAVDloBubJVM+h58D8",
-      }
-    });
-    // console.log(response)
-    if (response.status === 200) {
-      setProducts(response.data);
+  useEffect(() => {
+    setFilteredProducts(products)
+  }, [products])
+
+  useEffect(() => {
+    (async () => {
+      const { data, error } = await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/category/all");
+      setProducts(data);
+      setError(error);
+      setIsLoading(false);
+    })();
+  }, [])
+
+  const filterDeneme = async (id) => {
+    const {data, error} = await axios.get(`http://bootcampapi.techcs.io/api/fe/v1/detail/category/${id}`);
+  }
+
+  const filterProduct = title => {
+    if (title === "hepsi") {
+      setFilteredProducts(products)
     } else {
-      alert("API'den ürün çekilemedi.")
+      const arr = products.filter(product => product.title.includes(title));
+      setFilteredProducts(arr);
     }
   }
 
@@ -27,148 +41,39 @@ const Home = () => {
       <HomeWrapper>
         <img className="poster" src="/banner1.png" alt="banner" />
         <div className="category-container">
-          <button onClick={getProducts}>GET PRODUCTS</button>
           <ul>
-            <li>Hepsi<hr /></li>
-            <li>Pantolon<hr /></li>
-            <li>Gömlek<hr /></li>
-            <li>Tişört<hr /></li>
-            <li>Şort<hr /></li>
-            <li>Sweatshirt<hr /></li>
-            <li>Kazak<hr /></li>
-            <li>Polar<hr /></li>
-            <li>Mont<hr /></li>
-            <li>Abiye<hr /></li>
-            <li>Ayakkabı<hr /></li>
-            <li>Aksesuar<hr /></li>
-            <li>Çanta<hr /></li>
-            <li>Triko<hr /></li>
-            <li>Diğer<hr /></li>
+            <li onClick={() => filterProduct("hepsi")}>Hepsi<hr /></li>
+            <li onClick={() => filterProduct("pantolon")}>Pantolon<hr /></li>
+            <li onClick={() => filterProduct("gömlek")}>Gömlek<hr /></li>
+            <li onClick={() => filterProduct("tişört")}>Tişört<hr /></li>
+            <li onClick={() => filterProduct("şort")}>Şort<hr /></li>
+            <li onClick={() => filterProduct("sweatshirt")}>Sweatshirt<hr /></li>
+            <li onClick={() => filterProduct("kazak")}>Kazak<hr /></li>
+            <li onClick={() => filterProduct("polar")}>Polar<hr /></li>
+            <li onClick={() => filterProduct("mont")}>Mont<hr /></li>
+            <li onClick={() => filterProduct("abiye")}>Abiye<hr /></li>
+            <li onClick={() => filterProduct("ayakkabı")}>Ayakkabı<hr /></li>
+            <li onClick={() => filterProduct("aksesuar")}>Aksesuar<hr /></li>
+            <li onClick={() => filterProduct("çanta")}>Çanta<hr /></li>
+            <li onClick={() => filterProduct("triko")}>Triko<hr /></li>
+            <li onClick={() => filterProduct("diğer")}>Diğer<hr /></li>
           </ul>
         </div>
         <div className="product-container">
-          {/* 
-            products.map
-          */}
-          <div className="product-item">
-            <img src="/image5.png" alt="img" />
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk: Lacivert</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
-          <div className="product-item">
-            <div className="product-img">
-              <img src="/image5.png" alt="img" />
-            </div>
-            <div className="product-info">
-              <span>Marka</span>
-              <span>Renk</span>
-            </div>
-            <div className="product-price">
-              <p>1.999,00 TL</p>
-            </div>
-          </div>
+          {
+            filteredProducts.map(product => (
+              <div className="product-item" key={product.id} title={product.title} id={product.id}>
+                <img src="/image5.png" alt="product-img" />
+                <div className="product-info">
+                  <span>Marka</span>
+                  <span>Renk: Lacivert</span>
+                </div>
+                <div className="product-price">
+                  <p>1.999,00 TL</p>
+                </div>
+              </div>
+            ))
+          }
         </div>
       </HomeWrapper>
     </>

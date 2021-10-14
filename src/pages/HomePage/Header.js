@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { HeaderWrapper } from './HeaderSC';
 import { useHistory } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ const Header = () => {
             ? <div className="header-btn">
               <button><img src="/g6861.svg" alt="add-product" onClick={() => history.push('/products')} /> Ürün Ekle</button>
               <button onClick={() => history.push('/account')}><img src="/g3045.svg" alt="login-img" /> Hesabım</button>
+              <button onClick={() => {localStorage.removeItem("user-info"); history.push('/login')}}> Çıkış Yap</button>
             </div>
             // else:
             : <div className="header-btn">

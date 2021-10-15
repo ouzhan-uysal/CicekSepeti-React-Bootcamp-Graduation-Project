@@ -29,15 +29,6 @@ const Home = () => {
     })();
   }, [])
 
-  // const filterDeneme = async (title, id) => {
-  //   await axios.get(`http://bootcampapi.techcs.io/api/fe/v1/detail/category/${id}`)
-  //   .then(response => {
-  //     console.log("res: ", response);
-  //   }).then(error => {
-  //     setError()
-  //   })
-  // }
-
   const filterProduct = title => {
     if (title === "hepsi") {
       setFilteredProducts(products)

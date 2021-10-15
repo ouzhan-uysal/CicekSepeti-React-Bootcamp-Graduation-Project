@@ -9,6 +9,7 @@ import Login from './pages/LoginPage/Login'
 import Register from './pages/RegisterPage/Register';
 import Home from './pages/HomePage/Home';
 import Account from './pages/AccountPage/Account';
+import Products from './pages/Products/Products';
 
 // import PrivateRoute from './components/privateRoute';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/account" component={Account} />
+          <Route path="/products" component={Products} />
           <Route path="/" component={Home} />
         </Switch>
       </Router>

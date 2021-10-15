@@ -32,6 +32,9 @@ export const HomeWrapper = Styled.div`
   .product-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(14em, 1fr));
+    .loading-spinner {
+      
+    }
     .product-item {
       background-color: #fff;
       border-radius: .5em;

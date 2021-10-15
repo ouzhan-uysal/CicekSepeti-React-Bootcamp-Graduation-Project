@@ -47,10 +47,10 @@ const Register = () => {
             setError("Something went wrong. Please try again later.");
           }
         });
-      } else {  // else: give a alert
-        alert("Hatalı Email veya Şifre")
+      } else {  // if pass is not correct
+        alert("Hatalı Şifre")
       }
-    } else {
+    } else {  // if email is not correct
       alert("Geçerli bir Eposta giriniz.")
     }
   }

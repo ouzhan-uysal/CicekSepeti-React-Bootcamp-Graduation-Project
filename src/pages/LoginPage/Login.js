@@ -16,7 +16,7 @@ const Login = () => {
   useEffect(() => {
     Cookies.get('token') && history.push("/home")
     // localStorage.getItem('user-info') && history.push("/home")
-  }, [loading])
+  }, [history, loading])
 
   const loginBtn = async e => {
     e.preventDefault();
@@ -37,18 +37,11 @@ const Login = () => {
         setError("Something went wrong. Please try again later.");
       }
     });
-    // console.log("Response: ", response)
-    // if (response.status === 200) {
-    //   localStorage.setItem("user-info", JSON.stringify(response));
-    //   history.push("/home");
-    // } else {
-    //   alert("Erişim Reddi.");
-    // }
   }
 
   return (
     <>
-      <LoginWrapper>
+      <LoginWrapper> 
         <div className="main-img">
           <img src="/group52.png" alt="main_img" />
         </div>

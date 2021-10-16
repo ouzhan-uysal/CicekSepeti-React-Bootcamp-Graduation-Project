@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { HomeWrapper } from './HomeSC';
 import Loaders from '../../components/loaderIndicator';
+import { useHistory, useParams } from 'react-router';
+import { menuItems } from '../../contants';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -10,9 +12,18 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  let history = useHistory();
+  const { categoryTitle } = useParams();
+
   useEffect(() => {
-    setFilteredProducts(products)
-  }, [products])
+    if (categoryTitle === "hepsi" || categoryTitle === undefined) {
+      setFilteredProducts(products);
+    }
+    else {
+      const categoryFilter = products.filter(product => product.title.includes(categoryTitle));
+      setFilteredProducts(categoryFilter);
+    }
+  }, [products, categoryTitle])
 
   useEffect(() => {
     (async () => {
@@ -22,45 +33,25 @@ const Home = () => {
         .then(response => {
           setLoading(false);
           setProducts(response.data);
-        }).then(error => {
+        }).catch(error => {
           setLoading(false);
           setError(error);
         })
     })();
   }, [])
 
-  const filterProduct = title => {
-    if (title === "hepsi") {
-      setFilteredProducts(products)
-    } else {
-      const arr = products.filter(product => product.title.includes(title));
-      setFilteredProducts(arr);
-    }
-  }
-
   return (
     <>
       <Header />
       <HomeWrapper>
         <img className="poster" src="/banner1.png" alt="banner" />
-        {/* <button onClick={() => filterDeneme("sweetshirt", "DuucIuRejjB4nVJOAwbG")}>ID ve TITLE</button> */}
         <div className="category-container">
           <ul>
-            <li onClick={() => filterProduct("hepsi")}>Hepsi<hr /></li>
-            <li onClick={() => filterProduct("pantolon")}>Pantolon<hr /></li>
-            <li onClick={() => filterProduct("gömlek")}>Gömlek<hr /></li>
-            <li onClick={() => filterProduct("tişört")}>Tişört<hr /></li>
-            <li onClick={() => filterProduct("şort")}>Şort<hr /></li>
-            <li onClick={() => filterProduct("sweatshirt")}>Sweatshirt<hr /></li>
-            <li onClick={() => filterProduct("kazak")}>Kazak<hr /></li>
-            <li onClick={() => filterProduct("polar")}>Polar<hr /></li>
-            <li onClick={() => filterProduct("mont")}>Mont<hr /></li>
-            <li onClick={() => filterProduct("abiye")}>Abiye<hr /></li>
-            <li onClick={() => filterProduct("ayakkabı")}>Ayakkabı<hr /></li>
-            <li onClick={() => filterProduct("aksesuar")}>Aksesuar<hr /></li>
-            <li onClick={() => filterProduct("çanta")}>Çanta<hr /></li>
-            <li onClick={() => filterProduct("triko")}>Triko<hr /></li>
-            <li onClick={() => filterProduct("diğer")}>Diğer<hr /></li>
+            {
+              menuItems.map(item => (
+                <li key={item} onClick={() => history.push(`/${item.toLowerCase()}`)}>{item} <hr /></li>
+              ))
+            }
           </ul>
         </div>
         {
@@ -71,7 +62,7 @@ const Home = () => {
             <div className="product-container">
               {
                 filteredProducts.map(product => (
-                  <div className="product-item" key={product.id} title={product.title} id={product.id}>
+                  <div className="product-item" key={product.id} title={product.title} id={product.id} onClick={() => history.push(`/${product.title}/${product.id}`)}>
                     <img src="/image5.png" alt="product-img" />
                     <div className="product-info">
                       <span>Marka</span>

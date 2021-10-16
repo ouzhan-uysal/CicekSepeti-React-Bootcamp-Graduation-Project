@@ -16,7 +16,7 @@ const Register = () => {
   useEffect(() => {
     Cookies.get('token') && history.push("/home")
     // localStorage.getItem('user-info') && history.push("/home")
-  }, [loading])
+  }, [history, loading])
   /*
   deneme@gmail.com  123123123
    */

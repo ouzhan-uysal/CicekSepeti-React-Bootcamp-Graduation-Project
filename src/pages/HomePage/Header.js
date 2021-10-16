@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <>
       <HeaderWrapper>
-        <img className="header-logo" src="/group6607-logo.svg" alt="logo" onClick={() => history.push('/home')} />
+        <img className="header-logo" src="/group6607-logo.svg" alt="logo" onClick={() => history.push('/')} />
         {
           Cookies.get('token')
             // if user is login:

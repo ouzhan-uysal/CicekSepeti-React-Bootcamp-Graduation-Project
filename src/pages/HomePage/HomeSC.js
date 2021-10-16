@@ -42,6 +42,7 @@ export const HomeWrapper = Styled.div`
       padding: .5em;
       display: grid;
       justify-content: center;
+      cursor: pointer;
       img {
         max-width: 100%;
         max-height: 100%;

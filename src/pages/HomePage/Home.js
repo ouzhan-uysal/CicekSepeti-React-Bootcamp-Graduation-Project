@@ -16,7 +16,8 @@ const Home = () => {
   const { categoryTitle } = useParams();
 
   useEffect(() => {
-    if (categoryTitle === "hepsi" || categoryTitle === undefined) {
+    // if user select "Hepsi" tab || categoryTitle = undefined in the first work || user manually input url
+    if (categoryTitle === "hepsi" || categoryTitle === undefined || categoryTitle !== menuItems) {
       setFilteredProducts(products);
     }
     else {
@@ -33,12 +34,13 @@ const Home = () => {
         .then(response => {
           setLoading(false);
           setProducts(response.data);
-        }).catch(error => {
+        }).catch(err => {
           setLoading(false);
-          setError(error);
+          setError(err);
+          console.log("Hata: ", error);
         })
     })();
-  }, [])
+  }, [error])
 
   return (
     <>
@@ -65,11 +67,11 @@ const Home = () => {
                   <div className="product-item" key={product.id} title={product.title} id={product.id} onClick={() => history.push(`/${product.title}/${product.id}`)}>
                     <img src="/image5.png" alt="product-img" />
                     <div className="product-info">
-                      <span>Marka</span>
-                      <span>Renk: Lacivert</span>
+                      <span>{product.brand}</span>
+                      <span>Renk: {product.color}</span>
                     </div>
                     <div className="product-price">
-                      <p>1.999,00 TL</p>
+                      <p>{product.price} TL</p>
                     </div>
                   </div>
                 ))

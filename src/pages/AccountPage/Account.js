@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../HomePage/Header';
 import { AccountWrapper } from './AccountSC';
+import Cookies from 'js-cookie';
+import { useHistory } from 'react-router';
 
 const Account = () => {
+  let history = useHistory();
+
+  useEffect(() => {
+    Cookies.get('token') || history.push("/login")
+  }, [history])
+
   return (
     <>
       <Header />

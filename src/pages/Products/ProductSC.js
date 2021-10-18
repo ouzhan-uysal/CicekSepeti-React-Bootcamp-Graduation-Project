@@ -15,24 +15,49 @@ export const ProductWrapper = styled.div`
         font-size: .8rem;
         padding: .3rem 0;
       }
+      input[type=number] {
+        -moz-appearance: textfield;
+        ::-webkit-outer-spin-button, ::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        /* webkit solution */
+        ::-webkit-input-placeholder { 
+          text-align:right;
+        }
+        /* mozilla solution */
+        input:-moz-placeholder {
+          text-align:right;
+        }
+      }
+      input[type=checkbox] {
+        width: 100%;
+        height: 100%;
+      }
       input {
         padding: 1em;
-        color: #99A0A7;
+        color: #000;
         background-color: #F4F4F4;
         border: none;
         border-radius: 8px;
+        &placeholder {
+          color: #99A0A7;
+        }
       }
       textarea {
         padding: 1em;
-        color: #99A0A7;
+        color: #000;
         background-color: #F4F4F4;
         resize: none;
         border: none;
         border-radius: 8px;
+        &placeholder {
+          color: #99A0A7;
+        }
       }
       select {
         padding: .5em;
-        color: #99A0A7;
+        color: #000;
         background-color: #F4F4F4;
         border: none;
         border-radius: 8px;
@@ -62,8 +87,15 @@ export const ProductWrapper = styled.div`
       position: absolute;
       margin: 1em;
       right: 0;
-      bottom: 0;
-      width: auto;
+      bottom: 0;;
+      width: 315px;
+      height: 45px;
+      border: none;
+      background-color: #4B9CE2;
+      color: #fff;
+      letter-spacing: 0px;
+      text-align: center;
+      border-radius: 8px;
     }
   }
 `;

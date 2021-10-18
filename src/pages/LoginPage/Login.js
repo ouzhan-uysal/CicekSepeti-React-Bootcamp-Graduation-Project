@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { LOGIN_SUCCESS, LOGIN_ERROR } from '../../actions/actionTypes';
+
+// third part
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
+
+// style
 import { LoginWrapper } from './LoginSC';
+
+// popup
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -12,36 +24,56 @@ const Login = () => {
 
   let history = useHistory();
 
+  const auth = useSelector(state => state.auth);
+  // console.log(auth)
+  const dispatch = useDispatch();
+  // const userToken = () => {
+  //   dispatch({
+  //     type: LOGIN_SUCCESS,
+  //     action: {
+
+  //     }
+  //   })
+  // }
+
   // if already login --> routing index page
   useEffect(() => {
-    Cookies.get('token') && history.push("/home")
-    // localStorage.getItem('user-info') && history.push("/home")
+    Cookies.get('token') && history.push("/")
   }, [history, loading])
 
   const loginBtn = async e => {
     e.preventDefault();
-    setError(null);
     setLoading(true);
     await axios.post("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
       email: userEmail,
       password: userPassword
-    }).then(response => {
+    }).then(res => {
       setLoading(false);
-      // console.log("Response: ", response)
-      document.cookie = "token=" + response.data['access_token'];
-    }).catch(error => {
+      console.log("Response: ", res)
+      toast.success('Wow so easy!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      // dispatch({
+      //   email: JSON.parse(res.config.data).email,
+      //   token: res.data['access_token'],
+      // })
+      // document.cookie = "token=" + res.data['access_token'];
+    }).catch(err => {
       setLoading(false);
-      if(error.response.status === 401 || error.response.status === 400) {
-        setError(error.response.data.message)
-      } else {
-        setError("Something went wrong. Please try again later.");
-      }
+      setError(err);
+      console.log(error);
     });
   }
 
   return (
     <>
-      <LoginWrapper> 
+      <LoginWrapper>
         <div className="main-img">
           <img src="/group52.png" alt="main_img" />
         </div>
@@ -63,6 +95,7 @@ const Login = () => {
           </div>
         </div>
       </LoginWrapper>
+      <ToastContainer />
     </>
   )
 }

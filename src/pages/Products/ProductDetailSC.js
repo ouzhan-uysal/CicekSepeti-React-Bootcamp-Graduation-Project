@@ -6,7 +6,12 @@ export const DetailWrapper = styled.div`
   padding: .8em;
   display:grid;
   grid-template-columns: 1fr 1fr;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
   .details {
+    padding: 1em;
     form {
       display:grid;
       grid-template-columns: 1fr 1fr;

@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
+import Cookies from 'js-cookie';
 import Header from '../HomePage/Header';
 import { DetailWrapper } from './ProductDetailSC';
 
 const ProductDetail = () => {
+  let history = useHistory();
+
+  useEffect(() => {
+    Cookies.get('token') || history.push("/login")
+  }, [history])
+
   return (
     <>
       <Header />
       <DetailWrapper>
-        <img src="" alt="" />
+        <img src="/productDetail.png" alt="product-img" />
         <div className="details">
           <h2>Beli Uzun Trençkot Kareli</h2>
           <form>

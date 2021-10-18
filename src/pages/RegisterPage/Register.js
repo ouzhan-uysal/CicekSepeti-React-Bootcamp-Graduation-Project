@@ -11,15 +11,11 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   let history = useHistory();
 
-
   // if already login --> routing index page
   useEffect(() => {
-    Cookies.get('token') && history.push("/home")
-    // localStorage.getItem('user-info') && history.push("/home")
+    Cookies.get('token') && history.push("/")
   }, [history, loading])
-  /*
-  deneme@gmail.com  123123123
-   */
+
   const registerBtn = async e => {
     e.preventDefault();
     if (userEmail.includes("@")) {
@@ -33,19 +29,14 @@ const Register = () => {
         await axios.post("http://bootcampapi.techcs.io/api/fe/v1/authorization/signup", {
           email: userEmail,
           password: userPassword
-        }).then(response => {
+        }).then(res => {
           setLoading(false);
-          // console.log("Response: ", response)
-          document.cookie = "token=" + response.data['access_token'];
-        }).catch(error => {
+          // console.log("Response: ", res);
+          // document.cookie = "token=" + res.data['access_token'];
+        }).catch(err => {
           setLoading(false);
-          if (error.response.status === 401 || error.response.status === 400) {
-            setError(error.response.data.message)
-          } else if (error.response.status === 409) {
-            setError("This email is already used.");
-          } else {
-            setError("Something went wrong. Please try again later.");
-          }
+          setError(err);
+          console.log("Hata: ", error);
         });
       } else {  // if pass is not correct
         alert("Hatalı Şifre")

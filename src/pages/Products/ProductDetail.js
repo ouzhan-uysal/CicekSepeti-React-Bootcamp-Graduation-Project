@@ -4,9 +4,14 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import Header from '../HomePage/Header';
 import { DetailWrapper } from './ProductDetailSC';
+import { BuyModal, OfferModal } from '../../components/modal';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState([]);
+  const [productOffer, setProductOffer] = useState(false);
+  const [showOfferModal, setShowOfferModal] = useState(false);
+  const [showBuyModal, setShowBuyModal] = useState(false);
+
   let history = useHistory();
   const { id } = useParams();
 
@@ -26,18 +31,19 @@ const ProductDetail = () => {
   // console.log(product.imageUrl)
 
   const handleBuy = () => {
-    console.log("al")
+    setShowBuyModal(true);
   }
   const handleOffer = () => {
-    console.log("offer")
+    setShowOfferModal(true);
   }
+
   return (
     <>
       <Header />
       <DetailWrapper>
         <img src={product.imageUrl} alt="product-img" />
         <div className="details">
-          {/* <h2>{product.title}</h2> */}
+          <h2>{product.title}</h2>
           <form>
             <label>Marka:</label>
             {/* <span>{product.brand.title}</span> */}
@@ -46,19 +52,23 @@ const ProductDetail = () => {
             {/* <span>{product.color.title}</span> */}
 
             <label>Kullanım Durumu:</label>
-            <span>{product.status}</span>
+            {/* <span>{product.status}</span> */}
           </form>
-          <div className="price-offer">
+          <div className="price">
             <p>{product.price} TL</p>
-            <p>Verilen Teklif: <strong>119,90 TL</strong></p>
           </div>
           {
             product.isSold
               ?
-              <div className="details-btn">
-                <button>Satın Al</button>
-                <button>Teklif Ver</button>
-              </div>
+              <>
+                {productOffer && <div className="offer"> <p>Verilen Teklif: <strong>{productOffer} TL</strong></p> </div>}
+                <div className="details-btn">
+                  <button onClick={handleBuy}>Satın Al</button>
+                  <button onClick={handleOffer}>Teklif Ver</button>
+                  <BuyModal show={showBuyModal} close={() => setShowBuyModal(false)} />
+                  <OfferModal show={showOfferModal} close={() => setShowOfferModal(false)} />
+                </div>
+              </>
               :
               <div className="details-btn">
                 <p>Bu Ürün Satışta Değil</p>

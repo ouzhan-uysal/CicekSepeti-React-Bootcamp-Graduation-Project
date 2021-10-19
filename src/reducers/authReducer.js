@@ -1,4 +1,5 @@
 import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT } from "../actions/actionTypes";
+import axios from "axios";
 
 const INITIAL_STATE = {
   email: '',
@@ -13,7 +14,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
     case LOGIN_SUCCESS:
       console.log("State: ", state)
       console.log("Action: ", action)
-      document.cookie = "token=" + action.payload.token;
       return {
         ...state,
         email: action.payload.email,

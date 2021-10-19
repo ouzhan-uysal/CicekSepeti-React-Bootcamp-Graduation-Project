@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify';
+import { LOGIN_SUCCESS } from '../../actions/actionTypes';
 import { RegisterWrapper } from './RegisterSC';
 
 const Register = () => {
@@ -10,6 +13,7 @@ const Register = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   let history = useHistory();
+  const dispatch = useDispatch();
 
   // if already login --> routing index page
   useEffect(() => {
@@ -31,6 +35,24 @@ const Register = () => {
           password: userPassword
         }).then(res => {
           setLoading(false);
+          console.log("Response: ", res)
+          toast.success('Wow so easy!', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          // dispatch(userToken(res))
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: {
+              email: JSON.parse(res.config.data).email,
+              token: res.data['access_token'],
+            }
+          })
           // console.log("Response: ", res);
           // document.cookie = "token=" + res.data['access_token'];
         }).catch(err => {

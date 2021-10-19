@@ -17,7 +17,9 @@ export const DetailWrapper = styled.div`
       grid-template-columns: 1fr 1fr;
     }
   }
-  .price-offer {
+  .price {
+  }
+  .offer {
     p {
       &:last-child {
         padding: 1em;

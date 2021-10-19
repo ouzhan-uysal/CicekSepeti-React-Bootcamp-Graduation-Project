@@ -3,12 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { LOGIN_SUCCESS } from './actions/actionTypes';
 
 // import { setAuthorizationToken } from './helpers/setAuthorizationToken';
 
 // redux config
 import { Provider } from 'react-redux';
 import store from './helpers/store';
+
+const jwtToken = Cookies.get('token');
+if (jwtToken) {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${jwtToken}`;
+}
+else {
+  delete axios.defaults.headers.common["Authorization"];
+}
 
 ReactDOM.render(
   <React.StrictMode>

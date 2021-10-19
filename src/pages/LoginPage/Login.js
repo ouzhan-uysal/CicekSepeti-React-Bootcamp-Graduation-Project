@@ -59,6 +59,12 @@ const Login = () => {
         progress: undefined,
       });
       // dispatch(userToken(res))
+      document.cookie = "token=" + res.data['access_token'];
+      if (res.data['access_token']) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${res.data['access_token']}`;
+      } else {
+        delete axios.defaults.headers.common["Authorization"];
+      }
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {

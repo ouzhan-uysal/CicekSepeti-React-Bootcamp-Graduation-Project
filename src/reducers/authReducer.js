@@ -11,10 +11,13 @@ const INITIAL_STATE = {
 const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
+      console.log("State: ", state)
+      console.log("Action: ", action)
+      document.cookie = "token=" + action.payload.token;
       return {
         ...state,
-        email: action.email,
-        token: action.token,
+        email: action.payload.email,
+        token: action.payload.token,
         isAuthenticated: true,
         error: false,
         errorMessage: ''

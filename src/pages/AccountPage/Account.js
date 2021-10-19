@@ -3,9 +3,12 @@ import Header from '../HomePage/Header';
 import { AccountWrapper } from './AccountSC';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
 
 const Account = () => {
   let history = useHistory();
+  const auth = useSelector(state => state.auth);
+  console.log(auth)
 
   useEffect(() => {
     Cookies.get('token') || history.push("/login")
@@ -17,7 +20,7 @@ const Account = () => {
       <AccountWrapper>
         <div className="user-container">
           <img src="/user-logo.svg" alt="user-logo" />
-          <span>email@example.com</span>
+          <span>{auth.email}</span>
         </div>
         <div className="offer-container">
           <div className="offers-tab">

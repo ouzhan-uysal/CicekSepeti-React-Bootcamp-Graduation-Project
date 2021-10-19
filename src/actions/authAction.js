@@ -1,27 +1,17 @@
 import authService from "../services/authService";
 import { LOGIN_SUCCESS, LOGIN_ERROR, LOGOUT } from '../actions/actionTypes'
 
-const loginSuccess = user => {
+export const loginSuccess = user => {
   return {
     type: LOGIN_SUCCESS,
-    user
+    payload: user
   };
 };
 
-const loginError = error => {
+export const loginError = user => {
   return {
     type: LOGIN_ERROR,
-    error
-  };
-};
-
-export const login = (username, password) => {
-  return dispatch => {
-    authService.login(username, password)
-      .then(data => {
-        data.message ? dispatch(loginError(data.message)) : (dispatch(loginSuccess(data)))
-      })
-      .catch(err => dispatch(loginError(err)));
+    payload: user
   }
 }
 
@@ -30,4 +20,16 @@ export const logout = () => {
   return {
     type: LOGOUT
   };
-}
+};
+
+// export const login = (email, password) => {
+//   return dispatch => {
+//     authService.login(email, password)
+//       .then(data => {
+//         console.log(data)
+//         // data.message ? dispatch(loginError(data.message)) : (dispatch(loginSuccess(data)))
+//       })
+//       .catch(err => dispatch(loginError(err)));
+//   };
+// };
+

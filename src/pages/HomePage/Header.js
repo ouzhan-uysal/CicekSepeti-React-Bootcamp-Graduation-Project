@@ -14,7 +14,7 @@ const Header = () => {
           Cookies.get('token')
             // if user is login:
             ? <div className="header-btn">
-              <button onClick={() => history.push('/products')}><img src="/g6861.svg" alt="add-product" /> Ürün Ekle</button>
+              <button onClick={() => history.push('/add')}><img src="/g6861.svg" alt="add-product" /> Ürün Ekle</button>
               <button onClick={() => history.push('/account')}><img src="/g3045.svg" alt="login-img" /> Hesabım</button>
               <button onClick={() => { document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; history.push('/login') }}> Çıkış Yap</button>
             </div>

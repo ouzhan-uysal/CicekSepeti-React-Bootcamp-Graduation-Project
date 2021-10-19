@@ -16,12 +16,12 @@ const Home = () => {
   const { categoryTitle } = useParams();
 
   useEffect(() => {
-    // if user select "Hepsi" tab || categoryTitle = undefined in the first work || user manually input url
-    if (categoryTitle === "hepsi" || categoryTitle === undefined || categoryTitle !== menuItems) {
+    // if user select "Hepsi" tab || categoryTitle = undefined in the first work
+    if (categoryTitle === "hepsi" || categoryTitle === undefined) {
       setFilteredProducts(products);
     }
     else {
-      const categoryFilter = products.filter(product => product.title.includes(categoryTitle));
+      const categoryFilter = products.filter(product => product.category.title.includes(categoryTitle));
       setFilteredProducts(categoryFilter);
     }
   }, [products, categoryTitle])
@@ -30,10 +30,10 @@ const Home = () => {
     (async () => {
       setError(null);
       setLoading(true);
-      await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/category/all")
-        .then(response => {
+      await axios.get("https://bootcampapi.techcs.io/api/fe/v1/product/all")
+        .then(res => {
           setLoading(false);
-          setProducts(response.data);
+          setProducts(res.data);
         }).catch(err => {
           setLoading(false);
           setError(err);
@@ -64,11 +64,11 @@ const Home = () => {
             <div className="product-container">
               {
                 filteredProducts.map(product => (
-                  <div className="product-item" key={product.id} title={product.title} id={product.id} onClick={() => history.push(`/${product.title}/${product.id}`)}>
-                    <img src="/image5.png" alt="product-img" />
+                  <div className="product-item" key={product.id} title={product.category.title} id={product.id} onClick={() => history.push(`/${product.category.title}/${product.id}`)}>
+                    <img src={product.imageUrl} alt="product-img" />
                     <div className="product-info">
-                      <span>{product.brand}</span>
-                      <span>Renk: {product.color}</span>
+                      <span>{product.brand.title}</span>
+                      <span>Renk: {product.color.title}</span>
                     </div>
                     <div className="product-price">
                       <p>{product.price} TL</p>

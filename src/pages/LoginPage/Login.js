@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // redux
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LOGIN_SUCCESS, LOGIN_ERROR } from '../../actions/actionTypes';
 
 // third part
@@ -19,19 +19,18 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   let history = useHistory();
 
-  const auth = useSelector(state => state.auth);
-  // console.log(auth)
   const dispatch = useDispatch();
-  // const userToken = () => {
+
+  // const userToken = res => {
   //   dispatch({
   //     type: LOGIN_SUCCESS,
   //     action: {
-
+  //       email: JSON.parse(res.config.data).email,
+  //       token: res.data['access_token'],
   //     }
   //   })
   // }
@@ -44,7 +43,7 @@ const Login = () => {
   const loginBtn = async e => {
     e.preventDefault();
     setLoading(true);
-    await axios.post("http://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
+    await axios.post("https://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
       email: userEmail,
       password: userPassword
     }).then(res => {
@@ -59,15 +58,24 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-      // dispatch({
-      //   email: JSON.parse(res.config.data).email,
-      //   token: res.data['access_token'],
-      // })
-      // document.cookie = "token=" + res.data['access_token'];
+      // dispatch(userToken(res))
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: {
+          email: JSON.parse(res.config.data).email,
+          token: res.data['access_token'],
+        }
+      })
     }).catch(err => {
       setLoading(false);
-      setError(err);
-      console.log(error);
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: {
+          email: "",
+          token: "",
+          error: err
+        }
+      })
     });
   }
 

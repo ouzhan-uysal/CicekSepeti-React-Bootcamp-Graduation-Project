@@ -44,5 +44,13 @@ export const DetailWrapper = styled.div`
         color: #4B9CE2;
       }
     }
+    p {
+      background-color: #FFF0E2;
+      color: #FAAD60;
+      letter-spacing: 0px;
+      padding: 1rem;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
   }
 `;

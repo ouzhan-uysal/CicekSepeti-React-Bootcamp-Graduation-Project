@@ -1,44 +1,72 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import Header from '../HomePage/Header';
 import { DetailWrapper } from './ProductDetailSC';
 
 const ProductDetail = () => {
+  const [product, setProduct] = useState([]);
   let history = useHistory();
+  const { id } = useParams();
 
   useEffect(() => {
     Cookies.get('token') || history.push("/login")
   }, [history])
 
+  useEffect(() => {
+    (async () => {
+      await axios.get(`https://bootcampapi.techcs.io/api/fe/v1/product/${id}`)
+        .then(res => {
+          setProduct(res.data)
+        }).catch(err => console.log(err))
+    })();
+  }, [id])
+  // console.log(product['imageUrl'])
+  // console.log(product.imageUrl)
+
+  const handleBuy = () => {
+    console.log("al")
+  }
+  const handleOffer = () => {
+    console.log("offer")
+  }
   return (
     <>
       <Header />
       <DetailWrapper>
-        <img src="/productDetail.png" alt="product-img" />
+        <img src={product.imageUrl} alt="product-img" />
         <div className="details">
-          <h2>Beli Uzun Trençkot Kareli</h2>
+          {/* <h2>{product.title}</h2> */}
           <form>
             <label>Marka:</label>
-            <span>Lusi Viton</span>
+            {/* <span>{product.brand.title}</span> */}
 
             <label>Renk:</label>
-            <span>Bej Rengi</span>
+            {/* <span>{product.color.title}</span> */}
 
             <label>Kullanım Durumu:</label>
-            <span>Az Kullanılmış</span>
+            <span>{product.status}</span>
           </form>
           <div className="price-offer">
-            <p>319,90 TL</p>
+            <p>{product.price} TL</p>
             <p>Verilen Teklif: <strong>119,90 TL</strong></p>
           </div>
-          <div className="details-btn">
-            <button>Satın Al</button>
-            <button>Teklif Ver</button>
-          </div>
+          {
+            product.isSold
+              ?
+              <div className="details-btn">
+                <button>Satın Al</button>
+                <button>Teklif Ver</button>
+              </div>
+              :
+              <div className="details-btn">
+                <p>Bu Ürün Satışta Değil</p>
+              </div>
+          }
           <div>
             <h3>Açıklama</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique vel arcu elementum eleifend. Donec eu nibh nunc. Praesent justı mi, maximus vel consequat nec, auctor vel arcu.</p>
+            <p>{product.description}</p>
           </div>
         </div>
       </DetailWrapper>

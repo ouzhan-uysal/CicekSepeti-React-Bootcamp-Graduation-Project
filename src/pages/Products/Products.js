@@ -11,9 +11,38 @@ const Products = () => {
   const [brands, setBrands] = useState([]);
   const [colors, setColors] = useState([]);
   const [status, setStatus] = useState([]);
-  const [error, setError] = useState(null);
 
-  const [checked, setChecked] = useState(false);
+  // Input States:
+  const [productInfo, setProductInfo] = useState({
+    name: "",
+    description: "",
+    category: {
+      title: "",
+      id: "",
+    },
+    brand: {
+      title: "",
+      id: "",
+    },
+    color: {
+      title: "",
+      id: "",
+    },
+    status: {
+      title: "",
+      id: "",
+    },
+    price: 0,
+    isOfferable: false,
+  })
+  const [productPrice, setProductPrice] = useState(0);
+  const [productDescription, setProductDescription] = useState("");
+  const [productImgUrl, setProductImgUrl] = useState("");
+  const [productCategory, setProductCategory] = useState("");
+  const [productBrand, setProductBrand] = useState("");
+  const [productColor, setProductColor] = useState("");
+  const [productStatus, setProductStatus] = useState("");
+  const [isOfferable, setIsOfferable] = useState(false);
 
   let history = useHistory();
 
@@ -23,85 +52,73 @@ const Products = () => {
 
   useEffect(() => {
     (async () => {
-      setError(null);
-      await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/brand/all")
+      await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/brand/all")
         .then(res => {
           setBrands(res.data);
         })
         .catch(err => {
-          setError(err);
-          console.log("Hata: ", error);
+          console.log("Hata: ", err);
         })
     })();
-  }, [error])
+  }, [])
 
   useEffect(() => {
     (async () => {
-      await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/color/all")
+      await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/color/all")
         .then(res => {
           setColors(res.data);
         })
         .catch(err => {
-          setError(err);
-          console.log("Hata: ", error)
+          console.log("Hata: ", err)
         })
     })();
-  }, [error])
+  }, [])
 
   useEffect(() => {
     (async () => {
-      await axios.get("http://bootcampapi.techcs.io/api/fe/v1/detail/status/all")
+      await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/status/all")
         .then(res => {
           setStatus(res.data);
         })
         .catch(err => {
-          setError(err);
-          console.log("Hata: ", error)
+          console.log("Hata: ", err)
         })
     })();
-  }, [error])
-
-  const handleOfferType = () => {
-    setChecked(prevCheck => !prevCheck);
-  }
-
-  // const createNewProduct = async (e) => {
-  //   const productValues = {
-  //     price: e.target.value,
+  }, [])
 
   const createNewProduct = async () => {
     const productValues = {
-      price: document.getElementById("price").value,
-      imageUrl: document.getElementById("product-file").value,
-      title: document.getElementById("pname").value,
+      price: productPrice,
+      imageUrl: productImgUrl,
+      title: productInfo.name,
       status: {
-        title: document.getElementById("status").value,
+        title: productStatus,
         id: "",
       },
       color: {
-        title: document.getElementById("color").value,
+        title: productColor,
         id: "",
       },
       brand: {
-        title: document.getElementById("brand").value,
+        title: productBrand,
         id: "",
       },
       category: {
-        title: document.getElementById("categories").value,
+        title: productCategory,
         id: "",
       },
-      desciption: document.getElementById("description").value,
-      isOfferable: checked,
+      desciption: productDescription,
+      isOfferable: isOfferable,
     }
     console.log(productValues)
-    // await axios.post("http://bootcampapi.techcs.io/api/fe/v1/product/create")
-    //   .then(res => {
-    //     console.log(res)
-    //   })
-    //   .catch(err => {
-    //     setError(err);
-    //     console.log("Hata: ", err)
-    //   })
+    await axios.post("https://bootcampapi.techcs.io/api/fe/v1/product/create", {
+      productValues
+    }).then(res => {
+      console.log(res)
+    })
+      .catch(err => {
+        console.log("Hata: ", err)
+      })
   }
 
   return (
@@ -112,13 +129,13 @@ const Products = () => {
           <h2>Ürün Detayları</h2>
           <form>
             <label htmlFor="pname">Ürün Adı</label>
-            <input type="text" id="pname" name="pname" maxLength="100" placeholder="Örnek: Iphone 12 Pro Max" required />
+            <input type="text" id="pname" name="pname" maxLength="100" placeholder="Örnek: Iphone 12 Pro Max" value={productInfo.name} onChange={(e) => setProductInfo({ name: e.target.value })} required />
 
             <label htmlFor="description">Açıklama</label>
-            <textarea id="description" name="description" rows="5" cols="30" maxLength="500" placeholder="Ürün açıklaması girin" required></textarea>
+            <textarea id="description" name="description" rows="5" cols="30" maxLength="500" placeholder="Ürün açıklaması girin" value={productDescription} onChange={(e) => setProductDescription(e.target.value)} required></textarea>
 
             <label htmlFor="categories">Kategoriler</label>
-            <select id="categories" name="categories" defaultValue={'DEFAULT'} required>
+            <select id="categories" name="categories" defaultValue={'DEFAULT'} onChange={(e) => setProductCategory(e.target.value)} required>
               <option value="DEFAULT" disabled>Kategori Seç</option>
               {
                 menuItems.slice(1, menuItems.length).map(item => (
@@ -128,7 +145,7 @@ const Products = () => {
             </select>
 
             <label htmlFor="brand" >Marka</label>
-            <select id="brand" name="brand" defaultValue={'DEFAULT'} required>
+            <select id="brand" name="brand" defaultValue={'DEFAULT'} onChange={(e) => setProductBrand(e.target.value)} required>
               <option value="DEFAULT" disabled>Marka Seç</option>
               {
                 brands.map(item => (
@@ -138,7 +155,7 @@ const Products = () => {
             </select>
 
             <label htmlFor="color">Renk</label>
-            <select id="color" name="color" defaultValue={'DEFAULT'} required>
+            <select id="color" name="color" defaultValue={'DEFAULT'} onChange={(e) => setProductColor(e.target.value)} required>
               <option value="DEFAULT" disabled>Renk Seç</option>
               {
                 colors.map(item => (
@@ -148,7 +165,7 @@ const Products = () => {
             </select>
 
             <label htmlFor="status">Kullanım Durumu</label>
-            <select id="status" name="status" defaultValue={'DEFAULT'} required>
+            <select id="status" name="status" defaultValue={'DEFAULT'} onChange={(e) => setProductStatus(e.target.value)} required>
               <option value="DEFAULT" disabled>Kullanım Durumunu Seç</option>
               {
                 status.map(item => (
@@ -158,11 +175,10 @@ const Products = () => {
             </select>
 
             <label htmlFor="price">Fiyat</label>
-            <input type="number" min="0" id="price" placeholder="TL" required />
+            <input type="number" id="price" placeholder="TL" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
 
             <label htmlFor="offer">Teklif Opsiyonu
-              {/* <input type="checkbox" id="offer" name="offer" /> */}
-              <Switch onChange={handleOfferType} checked={checked} />
+              <Switch onChange={() => setIsOfferable(prevCheck => !prevCheck)} checked={isOfferable} />
             </label>
           </form>
         </div>
@@ -172,7 +188,7 @@ const Products = () => {
           <div>
             <img src="/upload-img-logo.svg" alt="set-img" />
             <p>Sürükleyip bırakarak yükle veya
-              <input id="product-file" type="file" accept="image/png, image/jpeg"></input>
+              <input id="product-file" type="file" accept="image/png, image/jpeg" value={productImgUrl} onChange={(e) => setProductImgUrl(e.target.value)}></input>
             </p>
             <p>PNG ve JPEG Dosya boyutu: max. 100kb</p>
           </div>

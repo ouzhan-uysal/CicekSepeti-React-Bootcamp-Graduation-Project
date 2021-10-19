@@ -26,7 +26,7 @@ const Register = () => {
         setLoading(true);
         console.log("email: ", userEmail);
         console.log("pass: ", userPassword);
-        await axios.post("http://bootcampapi.techcs.io/api/fe/v1/authorization/signup", {
+        await axios.post("https://bootcampapi.techcs.io/api/fe/v1/authorization/signup", {
           email: userEmail,
           password: userPassword
         }).then(res => {

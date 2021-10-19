@@ -1,22 +1,27 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-import { setAuthorizationToken } from '../helpers/setAuthorizationToken';
+// import { setAuthorizationToken } from '../helpers/setAuthorizationToken';
 
-export const login = (username, password) => {
-  return axios.post("http://localhost:3000/account/login", { username, password })
-    .then(user => {
+export const login = async (email, password) => {
+  return await axios.post("https://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
+    email, password
+  })
+    .then(res => {
       // if user found
-      if (user.data.status) {
-        const { token } = user.data;
-        localStorage.setItem("jwtToken", token);
-        setAuthorizationToken(token);
+      console.log("Res", res)
+      if (res.data) {
+        const { email, token } = res.data;
+        Cookies.get('token');
+        // setAuthorizationToken(token);
       }
-      return user.data;
+      return res.data;
     })
     .catch(err => console.log(err));
 }
 
 export const logout = () => {
-  localStorage.removeItem("jwtToken");
-  setAuthorizationToken(false);
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  // history.push('/login')
+  // setAuthorizationToken(false);
 }

@@ -12,9 +12,6 @@ import Account from './pages/AccountPage/Account';
 import Products from './pages/Products/Products';
 import ProductDetail from './pages/Products/ProductDetail';
 
-// import PrivateRoute from './components/privateRoute';
-
-
 function App() {
   return (
     <>
@@ -23,7 +20,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/account" component={Account} />
-          <Route path="/products" component={Products} />
+          <Route path="/add" component={Products} />
           <Route path="/:categoryTitle/:id" component={ProductDetail} />
           <Route path="/:categoryTitle" component={Home} />
           <Route path="/" component={Home} />

@@ -1,62 +1,17 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { BuyModalWrapper, OfferModalWrapper } from './modalSC';
 
-const BuyModalWrapper = styled.div`
-  .modal-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(111,111,111,0.5);
-    display:flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-content {
-    width: 500px;
-    background-color: #fff;
-  }
-  .modal-header {
-    padding: 10px;
-  }
-  .modal-title {
-    margin: 0;
-  }
-  .modal-body {
-    padding 10px;
-    border-top: 1px solid #eee;
-  }
-`;
-const OfferModalWrapper = styled.div`
-  .modal-container {
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    display:flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-content {
-    width: 500px;
-    background-color: #fff;
-  }
-  .modal-header {
-    padding: 10px;
-  }
-  .modal-title {
-    margin: 0;
-  }
-  .modal-body {
-    padding 10px;
-    border-top: 1px solid #eee;
-  }
-`;
 
-export const BuyModal = ({ show, close }) => {
+
+const purchaseProduct = async (id, isSold) => {
+  await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`, { id })
+    .then(res => {
+      console.log("Purchase Res: ", res);
+    }).catch(err => console.log(err))
+}
+
+export const BuyModal = ({ show, close, id, isSold }) => {
   if (!show) {
     return null
   }
@@ -64,22 +19,28 @@ export const BuyModal = ({ show, close }) => {
     <BuyModalWrapper>
       <div className="modal-container">
         <div className="modal-content">
-          <div className="modal-close">
-            <button onClick={close} >Close</button>
-          </div>
-          <div className="modal-header">
-            Header
-          </div>
-          <div className="modal-body">
-            Body
+          <div className="modal-header">Satın Al</div>
+          <div className="modal-body">Satın almak istiyor musunuz?</div>
+          <div className="modal-btn">
+            <button onClick={close}>Vazgeç</button>
+            <button onClick={() => purchaseProduct(id)}>Satın Al</button>
           </div>
         </div>
       </div>
-    </BuyModalWrapper>
+    </BuyModalWrapper >
   )
 }
 
-export const OfferModal = ({ show, close }) => {
+// Offer Part:
+
+const offerProduct = async id => {
+  await axios.post(`/${id}`, { id })
+    .then(res => {
+      console.log("Offer Res: ", res)
+    }).catch(err => console.log(err))
+}
+export const OfferModal = ({ show, close, imgUrl, title, price, id }) => {
+  const [offerPrice, setOfferPrice] = useState(0);
   if (!show) {
     return null
   }
@@ -88,14 +49,36 @@ export const OfferModal = ({ show, close }) => {
       <div className="modal-container">
         <div className="modal-content">
           <div className="modal-close">
-            <button onClick={close}>Close</button>
+            <h3>Teklif Ver </h3>
+            <button onClick={close}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="17.678" height="17.678" viewBox="0 0 17.678 17.678">
+                <g id="Group_6618" data-name="Group 6618" transform="translate(-1163.737 -189.161)">
+                  <path id="Line_61" data-name="Line 61" d="M0,22a1,1,0,0,1-1-1V0A1,1,0,0,1,0-1,1,1,0,0,1,1,0V21A1,1,0,0,1,0,22Z" transform="translate(1180 190.575) rotate(45)" fill="#525252" />
+                  <path id="Line_62" data-name="Line 62" d="M0,22a1,1,0,0,1-1-1V0A1,1,0,0,1,0-1,1,1,0,0,1,1,0V21A1,1,0,0,1,0,22Z" transform="translate(1180 205.425) rotate(135)" fill="#525252" />
+                </g>
+              </svg>
+            </button>
           </div>
           <div className="modal-header">
-            Header
+            <img src={imgUrl} alt="offer-img" />
+            <span>{title}</span>
+            <span>{price} TL</span>
           </div>
           <div className="modal-body">
-            Body
+            <label>
+              <input type="radio" name="offer-radio" value={price * 20 / 100} /> <span>%20'si Kadar Teklif Ver</span>
+            </label>
+            <label>
+              <input type="radio" name="offer-radio" value={price * 30 / 100} /> <span>%30'u Kadar Teklif Ver</span>
+            </label>
+            <label>
+              <input type="radio" name="offer-radio" value={price * 40 / 100} /> <span>%40'ı Kadar Teklif Ver</span>
+            </label>
+            <label>
+              <input type="number" name="offer-radio" value={offerPrice} onChange={(e) => setOfferPrice(e.target.value)} placeholder="Teklif Belirle" />
+            </label>
           </div>
+          <button onClick={() => offerProduct(id)}>Onayla</button>
         </div>
       </div>
     </OfferModalWrapper>

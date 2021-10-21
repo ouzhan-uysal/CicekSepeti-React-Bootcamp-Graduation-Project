@@ -19,6 +19,7 @@ function App() {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/account/:offers" component={Account} />
           <Route path="/account" component={Account} />
           <Route path="/add" component={Products} />
           <Route path="/:categoryTitle/:id" component={ProductDetail} />

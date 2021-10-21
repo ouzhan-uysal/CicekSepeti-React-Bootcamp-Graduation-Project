@@ -12,7 +12,7 @@ export const login = async (email, password) => {
       console.log("Res", res)
       if (res.data) {
         const { email, token } = res.data;
-        Cookies.get('token');
+        Cookies.get('auth_token');
         // setAuthorizationToken(token);
       }
       return res.data;
@@ -21,7 +21,7 @@ export const login = async (email, password) => {
 }
 
 export const logout = () => {
-  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   // history.push('/login')
   // setAuthorizationToken(false);
 }

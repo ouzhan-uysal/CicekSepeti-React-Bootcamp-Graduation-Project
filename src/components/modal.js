@@ -1,11 +1,14 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { BuyModalWrapper, OfferModalWrapper } from './modalSC';
 
 
 
 const purchaseProduct = async (id, isSold) => {
-  await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`, { id })
+  await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`, {
+    withCredentials: true,
+  })
     .then(res => {
       console.log("Purchase Res: ", res);
     }).catch(err => console.log(err))

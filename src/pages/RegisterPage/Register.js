@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify';
-import { LOGIN_SUCCESS } from '../../actions/actionTypes';
 import { RegisterWrapper } from './RegisterSC';
 
 const Register = () => {
@@ -13,11 +11,10 @@ const Register = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   let history = useHistory();
-  const dispatch = useDispatch();
 
   // if already login --> routing index page
   useEffect(() => {
-    Cookies.get('token') && history.push("/")
+    Cookies.get('auth_token') && history.push("/login")
   }, [history, loading])
 
   const registerBtn = async e => {
@@ -28,15 +25,13 @@ const Register = () => {
         e.preventDefault();
         setError(null);
         setLoading(true);
-        console.log("email: ", userEmail);
-        console.log("pass: ", userPassword);
         await axios.post("https://bootcampapi.techcs.io/api/fe/v1/authorization/signup", {
           email: userEmail,
-          password: userPassword
+          password: userPassword,
         }).then(res => {
           setLoading(false);
-          console.log("Response: ", res)
-          toast.success('Wow so easy!', {
+          // console.log("Register Res: ", res)
+          toast.success('Kayıt işlemi başarılı', {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -45,16 +40,9 @@ const Register = () => {
             draggable: true,
             progress: undefined,
           });
-          // dispatch(userToken(res))
-          dispatch({
-            type: LOGIN_SUCCESS,
-            payload: {
-              email: JSON.parse(res.config.data).email,
-              token: res.data['access_token'],
-            }
-          })
-          // console.log("Response: ", res);
-          // document.cookie = "token=" + res.data['access_token'];
+          // document.cookie = "auth_token=" + res.data['access_token'];
+          // localStorage.setItem("email", JSON.parse(res.config.data).email);
+          // localStorage.setItem("password", JSON.parse(res.config.data).password);
         }).catch(err => {
           setLoading(false);
           setError(err);

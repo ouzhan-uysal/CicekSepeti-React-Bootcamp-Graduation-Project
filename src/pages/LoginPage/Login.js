@@ -20,9 +20,10 @@ const Login = () => {
   let history = useHistory();
 
   // if already login --> routing index page
+  // console.log()
   useEffect(() => {
-    Cookies.get('auth_token') && history.push("/")
-  }, [history, loading])
+    Cookies.get('token') && history.push("/")
+  }, [Cookies.get('token')])
 
   const loginBtn = async e => {
     e.preventDefault();
@@ -40,18 +41,11 @@ const Login = () => {
         password: userPassword,
       }),
     }).then(res => {
-      console.log("Login Res: ", res)
+      // console.log("Login Res: ", res)
       return res.json();
     }).then(json => {
-      console.log(json)
-      if (json.success) {
-        console.log("x3")
-        this.setState({ error: '' });
-        this.context.router.push(json.redirect);
-      }
-      else {
-        console.log({ error: json.error })
-      }
+      // console.log(json)
+      document.cookie = "token=" + json.access_token;
     });
 
     // TODO: Axios: 
@@ -70,8 +64,8 @@ const Login = () => {
     //     draggable: true,
     //     progress: undefined,
     //   });
-    // Cookies.set('auth_token', res.data['access_token'], {domain: 'bootcampapi.techcs.io'})
-    // document.cookie = "auth_token=" + res.data['access_token'];
+    // Cookies.set('token', res.data['access_token'], { domain: 'bootcampapi.techcs.io' })
+    // document.cookie = "token=" + res.data['access_token'];
     //   localStorage.setItem("email", JSON.parse(res.config.data).email);
     //   localStorage.setItem("password", JSON.parse(res.config.data).password);
     // }).catch(err => {

@@ -47,7 +47,7 @@ const Products = () => {
   let history = useHistory();
 
   useEffect(() => {
-    Cookies.get('auth_token') || history.push("/login")
+    Cookies.get('token') || history.push("/login")
   }, [history])
 
   useEffect(() => {

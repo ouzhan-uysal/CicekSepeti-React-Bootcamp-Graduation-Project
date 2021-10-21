@@ -14,7 +14,7 @@ const Register = () => {
 
   // if already login --> routing index page
   useEffect(() => {
-    Cookies.get('auth_token') && history.push("/login")
+    Cookies.get('token') && history.push("/login")
   }, [history, loading])
 
   const registerBtn = async e => {
@@ -40,7 +40,7 @@ const Register = () => {
             draggable: true,
             progress: undefined,
           });
-          // document.cookie = "auth_token=" + res.data['access_token'];
+          // document.cookie = "token=" + res.data['access_token'];
           // localStorage.setItem("email", JSON.parse(res.config.data).email);
           // localStorage.setItem("password", JSON.parse(res.config.data).password);
         }).catch(err => {

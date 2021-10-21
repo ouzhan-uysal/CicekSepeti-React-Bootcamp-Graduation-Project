@@ -16,7 +16,7 @@ const Account = () => {
   // console.log(auth)
 
   useEffect(() => {
-    Cookies.get('auth_token') || history.push("/login")
+    Cookies.get('token') || history.push("/login")
   }, [history])
 
   useEffect(() => {

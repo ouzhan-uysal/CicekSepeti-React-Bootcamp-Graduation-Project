@@ -10,12 +10,12 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (Cookies.get('auth_token')) {
+    if (Cookies.get('token')) {
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {
           email: localStorage.getItem("email"),
-          token: Cookies.get('auth_token'),
+          token: Cookies.get('token'),
           isAuthenticated: true,
         }
       })
@@ -27,12 +27,12 @@ const Header = () => {
       <HeaderWrapper>
         <img className="header-logo" src="/group6607-logo.svg" alt="logo" onClick={() => history.push('/')} />
         {
-          Cookies.get('auth_token')
+          Cookies.get('token')
             // if user is login:
             ? <div className="header-btn">
               <button onClick={() => history.push('/add')}><img src="/g6861.svg" alt="add-product" /> Ürün Ekle</button>
               <button onClick={() => history.push('/account')}><img src="/g3045.svg" alt="login-img" /> Hesabım</button>
-              <button onClick={() => { document.cookie = "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; localStorage.removeItem("email"); localStorage.removeItem("password"); history.push('/login') }}> Çıkış Yap</button>
+              <button onClick={() => { document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; localStorage.removeItem("email"); localStorage.removeItem("password"); history.push('/login') }}> Çıkış Yap</button>
             </div>
             // else:
             : <div className="header-btn">

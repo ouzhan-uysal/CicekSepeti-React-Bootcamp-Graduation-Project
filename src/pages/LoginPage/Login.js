@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 // third part
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 
 // style
@@ -15,19 +13,19 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   let history = useHistory();
 
   // if already login --> routing index page
   // console.log()
   useEffect(() => {
-    Cookies.get('token') && history.push("/")
-  }, [Cookies.get('token')])
+    localStorage.getItem('email') && history.push("/")
+  }, [history, isLoading])
 
   const loginBtn = async e => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     // TODO: Fetch:
     return fetch('https://bootcampapi.techcs.io/api/fe/v1/authorization/signin', {
       method: 'POST',
@@ -42,36 +40,24 @@ const Login = () => {
       }),
     }).then(res => {
       // console.log("Login Res: ", res)
+      if (res.ok) {
+        toast.success('Giriş işlemi başarılı', {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        localStorage.setItem("email", userEmail);
+      }
       return res.json();
     }).then(json => {
-      // console.log(json)
-      document.cookie = "token=" + json.access_token;
+      console.log(json)
+      setIsLoading(false);
+      localStorage.setItem("token", json.access_token);
     });
-
-    // TODO: Axios: 
-    // await axios.post("https://bootcampapi.techcs.io/api/fe/v1/authorization/signin", {
-    //   email: userEmail,
-    //   password: userPassword,
-    // }).then(res => {
-    //   setLoading(false);
-    //   console.log("Login Res: ", res)
-    //   toast.success('Giriş işlemi başarılı', {
-    //     position: "top-right",
-    //     autoClose: 2500,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //   });
-    // Cookies.set('token', res.data['access_token'], { domain: 'bootcampapi.techcs.io' })
-    // document.cookie = "token=" + res.data['access_token'];
-    //   localStorage.setItem("email", JSON.parse(res.config.data).email);
-    //   localStorage.setItem("password", JSON.parse(res.config.data).password);
-    // }).catch(err => {
-    //   setLoading(false);
-    //   alert("Hatalı Giriş");
-    // });
   }
 
   return (
@@ -81,12 +67,12 @@ const Login = () => {
           <img src="/group52.png" alt="main_img" />
         </div>
         <div className="login-container">
-          <div>
-            <img src="/group6607.svg" alt="second_img" />
-          </div>
+          <img src="/group6607.svg" alt="second_img" />
           <div className="form-container">
-            <p>Giriş Yap</p>
-            <p>Fırsatlardan yararlanmak için giriş yap!</p>
+            <div className="login-text">
+              <p>Giriş Yap</p>
+              <p>Fırsatlardan yararlanmak için giriş yap!</p>
+            </div>
             <form>
               <label htmlFor="loginEmail">Email</label>
               <input type="email" className="form-control" id="loginEmail" placeholder="Email@example.com" value={userEmail} onChange={(e) => { setUserEmail(e.target.value) }} required />
@@ -94,7 +80,7 @@ const Login = () => {
               <input type="password" id="loginPassword" placeholder="Password" value={userPassword} onChange={(e) => { setUserPassword(e.target.value) }} required />
               <button type="click" onClick={loginBtn}>Giriş Yap</button>
             </form>
-            <p>Hesabınız yok mu? <span onClick={() => history.push("/register")}>Kayıt Ol</span></p>
+            <p>Hesabınız yok mu? <span style={{ color: '#4B9CE2', cursor: 'pointer' }} onClick={() => history.push("/register")}>Kayıt Ol</span></p>
           </div>
         </div>
       </LoginWrapper>

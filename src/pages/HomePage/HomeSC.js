@@ -61,9 +61,4 @@ export const HomeWrapper = Styled.div`
       }
     }
   }
-
-  // responsive
-  @media all and (max-width: 650px) {
-    
-  }
 `;

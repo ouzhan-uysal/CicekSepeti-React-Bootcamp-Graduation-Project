@@ -9,7 +9,7 @@ import Login from './pages/LoginPage/Login'
 import Register from './pages/RegisterPage/Register';
 import Home from './pages/HomePage/Home';
 import Account from './pages/AccountPage/Account';
-import Products from './pages/Products/Products';
+import AddProduct from './pages/Products/AddProduct';
 import ProductDetail from './pages/Products/ProductDetail';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/account/:offers" component={Account} />
           <Route path="/account" component={Account} />
-          <Route path="/add" component={Products} />
+          <Route path="/add" component={AddProduct} />
           <Route path="/:categoryTitle/:id" component={ProductDetail} />
           <Route path="/:categoryTitle" component={Home} />
           <Route path="/" component={Home} />

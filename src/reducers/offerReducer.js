@@ -1,16 +1,19 @@
-import { OFFER_PRODUCT } from "../actions/actionTypes";
+import { SET_PRODUCT_OFFER, CANCEL_PRODUCT_OFFER } from "../actions/actionTypes";
 
 const INITIAL_STATE = {
   product: "",
   productID: "",
-  price: "",
-  offer_price: "",
+  price: 0,
+  offer_price: 0,
 }
 
 const offerReducer = (state = INITIAL_STATE, action) => {
+  // console.log("action: ", action)
   switch (action.type) {
-    case OFFER_PRODUCT:
-      return { ...state }
+    case SET_PRODUCT_OFFER:
+      return { state: action.payload }
+    case CANCEL_PRODUCT_OFFER:
+      return { ...state, state }
     default:
       return { ...state }
   }

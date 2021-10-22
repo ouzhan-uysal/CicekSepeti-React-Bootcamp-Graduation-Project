@@ -1,14 +1,139 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
 
 body {
+  background-color: #f2f2f2;
   #root {
     font-family: Nunito;
     margin: 0;
     padding: 0;
-    background-color: #F2F2F2;
     min-height: 100vh;
     button {
       cursor: pointer;
+    }
+  }
+}
+
+// responsive
+@media all and (max-width: 650px) {
+  body {
+    #root {
+      display: grid;
+      grid-template-columns: 1fr;
+      background-color: #f2f2f2;
+      .main-img {
+        display: none;
+      }
+      // Login Page
+      .login-container {
+        display: grid;
+        img {
+          padding-top: 3rem;
+          padding-left: 25%;
+        }
+        .form-container {
+          justify-content: center;
+          margin: 0 1rem;
+          width: 355px;
+          height: 435px;
+          box-shadow: 0px 3px 12px #1e36480a;
+          border-radius: 8px;
+          padding: 0;
+          form {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            input {
+              width: 90%;
+            }
+            button {
+              width: 70vw;
+              height: 45px;
+            }
+          }
+        }
+      }
+      // Register Page
+      .register-container {
+        display: grid;
+        img {
+          padding-top: 3rem;
+          padding-left: 25%;
+        }
+        .form-container {
+          display: grid;
+          justify-content: center;
+          margin: 0 1rem;
+          width: 355px;
+          height: 435px;
+          box-shadow: 0px 3px 12px #1e36480a;
+          border-radius: 8px;
+          padding: 0;
+          form {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            input {
+              width: 90%;
+            }
+            button {
+              width: 70vw;
+              height: 45px;
+            }
+          }
+        }
+      }
+    }
+    // Header:
+    header {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 0;
+      margin: 0;
+      width: 90vw;
+      .header-logo {
+        margin: 0 !important;
+      }
+      .header-btn {
+        display: grid;
+        grid-template-columns: auto auto;
+        margin: 0.1rem 0 !important;
+        button {
+          &:nth-child(1) {
+            overflow: hidden;
+          }
+          &:nth-child(3) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    // Home Page:
+    #home-container {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      margin: 0 auto;
+      .poster {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .product-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(11em, 1fr));
+      }
+    }
+
+    // Account Page:
+    .account-container {
+      margin: 0 !important;
+      .user-container {
+
+      }
+    }
+
+    // Add Product Page:
+    .add-container {
+      margin: 0 !important;
     }
   }
 }

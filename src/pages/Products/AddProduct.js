@@ -1,43 +1,20 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { menuItems } from '../../contants';
 import Header from '../HomePage/Header';
-import { ProductWrapper } from './ProductSC';
-import Cookies from 'js-cookie';
+import { ProductWrapper } from './AddProductSC';
 import Switch from 'react-switch';
 import { useHistory } from 'react-router';
 
-const Products = () => {
+const AddProduct = () => {
   const [brands, setBrands] = useState([]);
   const [colors, setColors] = useState([]);
   const [status, setStatus] = useState([]);
+  const [category, setCategory] = useState([]);
 
   // Input States:
-  const [productInfo, setProductInfo] = useState({
-    name: "",
-    description: "",
-    category: {
-      title: "",
-      id: "",
-    },
-    brand: {
-      title: "",
-      id: "",
-    },
-    color: {
-      title: "",
-      id: "",
-    },
-    status: {
-      title: "",
-      id: "",
-    },
-    price: 0,
-    isOfferable: false,
-  })
+  const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [productDescription, setProductDescription] = useState("");
-  const [productImgUrl, setProductImgUrl] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [productBrand, setProductBrand] = useState("");
   const [productColor, setProductColor] = useState("");
@@ -47,7 +24,7 @@ const Products = () => {
   let history = useHistory();
 
   useEffect(() => {
-    Cookies.get('token') || history.push("/login")
+    localStorage.getItem("email") || history.push("/login")
   }, [history])
 
   useEffect(() => {
@@ -86,50 +63,83 @@ const Products = () => {
     })();
   }, [])
 
-  const createNewProduct = async () => {
-    const productValues = {
-      price: productPrice,
-      imageUrl: productImgUrl,
-      title: productInfo.name,
-      status: {
-        title: productStatus,
-        id: "",
+  useEffect(() => {
+    (async () => {
+      await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/category/all")
+        .then(res => {
+          setCategory(res.data);
+        })
+        .catch(err => {
+          console.log("Hata: ", err)
+        })
+    })();
+  }, [])
+
+  const handleFile = async (e) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        accept: '/*',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': ' multipart/form-data'
       },
-      color: {
-        title: productColor,
-        id: "",
-      },
-      brand: {
-        title: productBrand,
-        id: "",
-      },
-      category: {
-        title: productCategory,
-        id: "",
-      },
-      desciption: productDescription,
-      isOfferable: isOfferable,
-    }
-    console.log(productValues)
-    await axios.post("https://bootcampapi.techcs.io/api/fe/v1/product/create", {
-      productValues
-    }).then(res => {
-      console.log(res)
-    })
-      .catch(err => {
-        console.log("Hata: ", err)
+      credentials: 'same-origin',
+      body: JSON.stringify(e.target.value),
+    };
+    fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', requestOptions)
+      .then(res => {
+        console.log("File Res: ", res);
+        // setProductImgUrl(res.url);
+        return res.json();
       })
+      .then(data => console.log(data))
+      .catch(err => console.log(err))
+  }
+
+  const createNewProduct = async () => {
+    if (!productPrice || productName.length < 3 || productStatus.length < 1 || productColor.length < 1 || productBrand.length < 1 || productCategory.length < 1 || productDescription.length < 1) {
+      alert("Boş alanları doldurunuz.")
+    } else {
+      fetch('https://bootcampapi.techcs.io/api/fe/v1/product/create', {
+        method: 'POST',
+        headers: {
+          accept: '/*',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          price: productPrice,
+          imageUrl: "https://storage.googleapis.com/frontend-bootcamp-e9376.appspot.com/products/images/Image%205.png?GoogleAccessId=firebase-adminsdk-dli7s%40frontend-bootcamp-e9376.iam.gserviceaccount.com&Expires=16731014400&Signature=aEvwfDH4ExVO%2BOQ0M9CCku%2Bdxkw3SV35Aj1fqd%2FbNLHNY80WGu9uV68an1rRGVD1DAla%2F9CbUxxMBt5HW15IAYnyYJ1sEfPr4vXKkoo4075Yfen7PzRN04AsAB8SPJ%2F%2B7hM9H5rq0rKHV7HGmO21x86OaD9TvwUXhxMp1u0lSv64wEdMTzt7xYWx8Y686p5UCROkr%2B2z5X3A7NLDcAas1ZJ64slLJGGVdIuliub2RQwB49Y9zqGoHgc8FnM3%2BNEarxMvFKdPL7yi2YYlmEaIhCA4%2Bss5ZX1jxB0BlTTwEn%2FyJjzBqH5cQVBIVw%2Bk7PGfYQLjdImN6LonS9%2FPlNMTUg%3D%3D",
+          title: productName,
+          status: { title: productStatus, id: status.find(el => el = productStatus).id },
+          color: { title: productColor, id: colors.find(el => el = productColor).id },
+          brand: { title: productBrand, id: brands.find(el => el = productBrand).id },
+          category: { title: productCategory, id: category.find(el => el = productCategory).id },
+          description: productDescription,
+          isOfferable: isOfferable
+        }),
+      }).then(res => {
+        // console.log("Login Res: ", res)
+        if (res.ok) {
+          console.log("Add Res: ", res)
+        }
+        return res.json();
+      }).then(json => {
+        console.log(json)
+      }).catch(err => console.log(err));
+    }
   }
 
   return (
     <>
       <Header />
-      <ProductWrapper>
+      <ProductWrapper id="add-container">
         <div className="product-details">
           <h2>Ürün Detayları</h2>
           <form>
             <label htmlFor="pname">Ürün Adı</label>
-            <input type="text" id="pname" name="pname" maxLength="100" placeholder="Örnek: Iphone 12 Pro Max" value={productInfo.name} onChange={(e) => setProductInfo({ name: e.target.value })} required />
+            <input type="text" id="pname" name="pname" maxLength="100" placeholder="Örnek: Iphone 12 Pro Max" value={productName} onChange={(e) => setProductName(e.target.value)} />
 
             <label htmlFor="description">Açıklama</label>
             <textarea id="description" name="description" rows="5" cols="30" maxLength="500" placeholder="Ürün açıklaması girin" value={productDescription} onChange={(e) => setProductDescription(e.target.value)} required></textarea>
@@ -138,8 +148,8 @@ const Products = () => {
             <select id="categories" name="categories" defaultValue={'DEFAULT'} onChange={(e) => setProductCategory(e.target.value)} required>
               <option value="DEFAULT" disabled>Kategori Seç</option>
               {
-                menuItems.slice(1, menuItems.length).map(item => (
-                  <option key={item} value={item.toLowerCase()}>{item}</option>
+                category.map(item => (
+                  <option key={item.id} value={item.title}>{item.title}</option>
                 ))
               }
             </select>
@@ -188,7 +198,7 @@ const Products = () => {
           <div>
             <img src="/upload-img-logo.svg" alt="set-img" />
             <p>Sürükleyip bırakarak yükle veya
-              <input id="product-file" type="file" accept="image/png, image/jpeg" value={productImgUrl} onChange={(e) => setProductImgUrl(e.target.value)}></input>
+              <input id="product-file" type="file" accept="image/png, image/jpeg" onChange={handleFile}></input>
             </p>
             <p>PNG ve JPEG Dosya boyutu: max. 100kb</p>
           </div>
@@ -199,4 +209,4 @@ const Products = () => {
   )
 }
 
-export default Products;
+export default AddProduct;

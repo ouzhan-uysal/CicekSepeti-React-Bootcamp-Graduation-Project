@@ -5,6 +5,8 @@ import { HomeWrapper } from './HomeSC';
 import Loaders from '../../components/loaderIndicator';
 import { useHistory, useParams } from 'react-router';
 import { menuItems } from '../../contants';
+import { useDispatch } from 'react-redux';
+import { SET_PRODUCT_OFFER } from '../../actions/actionTypes';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -13,6 +15,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   let history = useHistory();
+  const dispatch = useDispatch();
   const { categoryTitle } = useParams();
 
   useEffect(() => {
@@ -40,12 +43,26 @@ const Home = () => {
           console.log("Hata: ", error);
         })
     })();
-  }, [error])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const productRouter = (id, category, title, price) => {
+    dispatch({
+      type: SET_PRODUCT_OFFER,
+      payload: {
+        product: title,
+        productID: id,
+        price: price,
+        offerPrice: 0
+      }
+    })
+    history.push(`/${category}/${id}`)
+  }
 
   return (
     <>
-      <Header />
-      <HomeWrapper>
+      <Header id="x-container"/>
+      <HomeWrapper id="home-container" >
         <img className="poster" src="/banner1.png" alt="banner" />
         <div className="category-container">
           <ul>
@@ -64,7 +81,7 @@ const Home = () => {
             <div className="product-container">
               {
                 filteredProducts.map(product => (
-                  <div className="product-item" key={product.id} title={product.category.title} id={product.id} onClick={() => history.push(`/${product.category.title}/${product.id}`)}>
+                  <div className="product-item" key={product.id} title={product.category.title} id={product.id} onClick={() => productRouter(product.id, product.category.title, product.title, product.price)}>
                     <img src={product.imageUrl} alt="product-img" />
                     <div className="product-info">
                       <span>{product.brand.title}</span>

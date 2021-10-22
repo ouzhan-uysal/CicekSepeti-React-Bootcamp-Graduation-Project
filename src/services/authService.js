@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 // import { setAuthorizationToken } from '../helpers/setAuthorizationToken';
 
@@ -11,8 +10,7 @@ export const login = async (email, password) => {
       // if user found
       console.log("Res", res)
       if (res.data) {
-        const { email, token } = res.data;
-        Cookies.get('token');
+        // const { email, token } = res.data;
         // setAuthorizationToken(token);
       }
       return res.data;
@@ -21,7 +19,6 @@ export const login = async (email, password) => {
 }
 
 export const logout = () => {
-  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   // history.push('/login')
   // setAuthorizationToken(false);
 }

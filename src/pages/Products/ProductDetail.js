@@ -10,6 +10,7 @@ const ProductDetail = () => {
   const [productOffer, setProductOffer] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
+  const [hasBeenOffered, setHasBeenOffered] = useState(false);
 
   let history = useHistory();
   const { id } = useParams();
@@ -31,25 +32,23 @@ const ProductDetail = () => {
   }, [id])
 
   const cancelOffer = async id => {
-    await axios.delete(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer//${id}`)
-      .then(res => {
-        console.log("cancelOffer Res: ", res)
-      }).catch(err => console.log(err))
+    // axios.delete(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${id}`)
+    //   .then(res => {
+    //     console.log("cancelOffer Res: ", res)
+    //   }).catch(err => console.log(err))
 
     // FIXME: Fetch
-    // return fetch(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${id}`, {
-    //   method: 'DELETE',
-    //   headers: {
-    //     accept: '/*',
-    //     'Authorization': `Bearer ${localStorage.getItem("token")}`,
-    //   },
-    //   credentials: 'same-origin',
-    //   body: ({ id: id }),
-    // }).then(res => {
-    //   console.log("cancelOffer Res: ", res);
-    //   return res.json();
-    // }).then(data => console.log(data))
-    //   .catch(err => console.log(err))
+    fetch(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${id}`, {
+      method: 'DELETE',
+      headers: {
+        accept: '/*',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ id: id }),
+    }).then(res => {
+      console.log("cancelOffer Res: ", res);
+      return res.json();
+    }).then(json => console.log(json)).catch(err => console.log(err))
   }
 
   return (
@@ -86,15 +85,17 @@ const ProductDetail = () => {
                       <div className="details-btn">
                         <button onClick={() => setShowBuyModal(true)}>Satın Al</button>
                         {
-                          product.isOfferable &&
-                          <>
-                            <button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>
+                          product.isOfferable && !hasBeenOffered ?
+                            <>
+                              <button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>
+                              <button onClick={() => cancelOffer(product.id)}>Teklifi Geri Çek</button>
+                            </>
+                            :
                             <button onClick={() => cancelOffer(product.id)}>Teklifi Geri Çek</button>
-                          </>
                           // FIXME: redux tan ürünün offerPrice'ı var ise teklifi geri çek butonu koyacam.
                         }
                         <BuyModal show={showBuyModal} close={() => setShowBuyModal(false)} id={product.id} isSold={() => product.isSold = false} />
-                        <OfferModal show={showOfferModal} close={() => setShowOfferModal(false)} imgUrl={product.imageUrl} title={product.title} price={product.price} id={product.id} offerPrice={() => setProductOffer()} />
+                        <OfferModal show={showOfferModal} close={() => setShowOfferModal(false)} imgUrl={product.imageUrl} title={product.title} price={product.price} id={product.id} offerPrice={() => setProductOffer()} offered={() => setHasBeenOffered(!hasBeenOffered)} />
                       </div>
                     </>
                     :

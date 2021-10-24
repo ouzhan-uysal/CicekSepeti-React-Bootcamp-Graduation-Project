@@ -50,23 +50,27 @@ export const BuyModal = ({ show, close, id, isSold }) => {
 // }
 
 // TODO: Offer:
-const OfferProduct = async (id, title, price, offerPrice) => {
+const OfferProduct = async (id, title, price, offerPrice, offered) => {
+  const newPrice = Number(offerPrice)
+  console.log(typeof (newPrice))
   fetch(`https://bootcampapi.techcs.io/api/fe/v1/product/offer/${id}`, {
     method: 'POST',
     headers: {
       accept: '/*',
-      'Content-Type':'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify({
-      offeredPrice: Number(offerPrice),
+      offeredPrice: newPrice,
     }),
   }).then(res => {
-      console.log("Offer Res: ", res);
-      // OfferAction(id, title, price, offerPrice);
-    }).catch(err => console.log(err))
+    console.log("Offer Res: ", res);
+    offered = true;
+    // OfferAction(id, title, price, offerPrice);
+    return res.json();
+  }).then(json => console.log(json)).catch(err => console.log(err))
 }
-export const OfferModal = ({ show, close, imgUrl, title, price, id }) => {
+export const OfferModal = ({ show, close, imgUrl, title, price, id, offered }) => {
   const [offerPrice, setOfferPrice] = useState(0);
   // const offer = useSelector(state => state.offer);
   // console.log("OfferModal Offer: ", offer);
@@ -108,7 +112,7 @@ export const OfferModal = ({ show, close, imgUrl, title, price, id }) => {
               <input type="number" name="offer-radio" value={offerPrice} onChange={(e) => setOfferPrice(e.target.value)} placeholder="Teklif Belirle" />
             </label>
           </div>
-          <button onClick={() => OfferProduct(id, title, price, offerPrice)}>Onayla</button>
+          <button onClick={() => OfferProduct(id, title, price, offerPrice, offered)}>Onayla</button>
         </div>
       </div>
     </OfferModalWrapper>

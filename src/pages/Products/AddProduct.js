@@ -13,6 +13,7 @@ const AddProduct = () => {
 
   // Input States:
   const [productName, setProductName] = useState("");
+  const [productImgUrl, setProductImgUrl] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [productDescription, setProductDescription] = useState("");
   const [productCategory, setProductCategory] = useState("");
@@ -29,6 +30,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     (async () => {
+      // Fetch Brands
       await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/brand/all")
         .then(res => {
           setBrands(res.data);
@@ -41,6 +43,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     (async () => {
+      // Fetch Colors
       await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/color/all")
         .then(res => {
           setColors(res.data);
@@ -53,6 +56,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     (async () => {
+      // Fetch Status
       await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/status/all")
         .then(res => {
           setStatus(res.data);
@@ -65,6 +69,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     (async () => {
+      // Fetch Categories
       await axios.get("https://bootcampapi.techcs.io/api/fe/v1/detail/category/all")
         .then(res => {
           setCategory(res.data);
@@ -75,25 +80,33 @@ const AddProduct = () => {
     })();
   }, [])
 
+  // FIXME: Fetch url from api
   const handleFile = async (e) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        accept: '/*',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'Content-Type': ' multipart/form-data'
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(e.target.value),
-    };
-    fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', requestOptions)
-      .then(res => {
-        console.log("File Res: ", res);
-        // setProductImgUrl(res.url);
-        return res.json();
+    // Fetch Image Url from image
+    // console.log(e.target.files[0]);
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      // const fileBinary = e.target.result.split(",")[1]
+      fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
+        method: 'POST',
+        headers: {
+          accept: '/*',
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        },
       })
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
+        .then(res => {
+          console.log("File Res: ", res);
+          if (res.ok) {
+            setProductImgUrl(res.url);
+          }
+          return res.json();
+        })
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+    }
   }
 
   const createNewProduct = async () => {
@@ -110,12 +123,13 @@ const AddProduct = () => {
         credentials: 'same-origin',
         body: JSON.stringify({
           price: productPrice,
-          imageUrl: "https://storage.googleapis.com/frontend-bootcamp-e9376.appspot.com/products/images/Image%205.png?GoogleAccessId=firebase-adminsdk-dli7s%40frontend-bootcamp-e9376.iam.gserviceaccount.com&Expires=16731014400&Signature=aEvwfDH4ExVO%2BOQ0M9CCku%2Bdxkw3SV35Aj1fqd%2FbNLHNY80WGu9uV68an1rRGVD1DAla%2F9CbUxxMBt5HW15IAYnyYJ1sEfPr4vXKkoo4075Yfen7PzRN04AsAB8SPJ%2F%2B7hM9H5rq0rKHV7HGmO21x86OaD9TvwUXhxMp1u0lSv64wEdMTzt7xYWx8Y686p5UCROkr%2B2z5X3A7NLDcAas1ZJ64slLJGGVdIuliub2RQwB49Y9zqGoHgc8FnM3%2BNEarxMvFKdPL7yi2YYlmEaIhCA4%2Bss5ZX1jxB0BlTTwEn%2FyJjzBqH5cQVBIVw%2Bk7PGfYQLjdImN6LonS9%2FPlNMTUg%3D%3D",
+          // imageUrl: productImgUrl,
+          imageUrl: "https://storage.googleapis.com/frontend-bootcamp-e9376.appspot.com/products/images/image.png?GoogleAccessId=firebase-adminsdk-dli7s%40frontend-bootcamp-e9376.iam.gserviceaccount.com&Expires=16731014400&Signature=ZlVq%2BSp%2FK2v7XkULBaQfK5xtQVz7ekR7XdEsMkhqgwXDWlkgOjDpidp8efGPvx9AaxhHNwB3Kurp3PWIx8LfhmQhlB1RCGpbaQofsiD6OYDIIj398QQUqGKDAgB4eQ81U57gml%2FZmdrzO6mg7PElpG2vy5KyHp0QiOBU6tCGPb3PWRdMxBc82VhVxokoGi%2FVp1dQg1olkH6ZHMhvgxGCIZXbk8XYEs368UD0x7xuQQkoH2F%2FFxWkC0Da4Q0Lba0lLQRT5bidN%2FOJ1BnV1qnhB6GGUOHZnmooz9jO1vzevpyukgyDUOD6yDnfNa4TLrbt1QrSKiDUHc97yVajqZxiIw%3D%3D",
           title: productName,
-          status: { title: productStatus, id: status.find(el => el = productStatus).id },
-          color: { title: productColor, id: colors.find(el => el = productColor).id },
-          brand: { title: productBrand, id: brands.find(el => el = productBrand).id },
-          category: { title: productCategory, id: category.find(el => el = productCategory).id },
+          status: { title: productStatus, id: status.filter(item => item.title === productStatus)[0].id },
+          color: { title: productColor, id: colors.filter(item => item.title === productColor)[0].id },
+          brand: { title: productBrand, id: brands.filter(item => item.title === productBrand)[0].id },
+          category: { title: productCategory, id: category.filter(item => item.title === productCategory)[0].id },
           description: productDescription,
           isOfferable: isOfferable
         }),

@@ -33,6 +33,7 @@ export const DetailWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 10%;
     gap: 1em;
+    white-space:nowrap;
     button {
       padding: .7em 3em;
       border: none;

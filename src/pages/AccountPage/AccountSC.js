@@ -76,6 +76,9 @@ export const AccountWrapper = styled.div`
               background-color: #F77474;
             }
           }
+          span {
+            
+          }
         }
       }
     }

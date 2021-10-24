@@ -9,10 +9,9 @@ const Header = () => {
   let history = useHistory();
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("token");
     axios.interceptors.request.use(
       config => {
-        config.headers.authorization = `Bearer ${accessToken}`;
+        config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
         return config;
       },
       err => {

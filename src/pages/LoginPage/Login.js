@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     // TODO: Fetch:
-    return fetch('https://bootcampapi.techcs.io/api/fe/v1/authorization/signin', {
+    fetch('https://bootcampapi.techcs.io/api/fe/v1/authorization/signin', {
       method: 'POST',
       headers: {
         accept: '/*',
@@ -56,7 +56,9 @@ const Login = () => {
     }).then(json => {
       console.log(json)
       setIsLoading(false);
-      localStorage.setItem("token", json.access_token);
+      if (json.access_token) {
+        localStorage.setItem("token", json.access_token);
+      }
     });
   }
 

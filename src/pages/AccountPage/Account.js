@@ -20,14 +20,16 @@ const Account = () => {
 
   useEffect(() => {
     (async () => {
+      // Teklif verdiklerim
       if (offers === "received-offers") {
-        await axios.get("https://bootcampapi.techcs.io/api/fe/v1/account/received-offers")
+        axios.get("https://bootcampapi.techcs.io/api/fe/v1/account/received-offers")
           .then(res => {
             console.log("Received Offers: ", res)
             setListOffers(res.data);
           }).catch(err => console.log(err))
       } else {
-        await axios.get("https://bootcampapi.techcs.io/api/fe/v1/account/given-offers")
+        // Teklif aldıklarım
+        axios.get("https://bootcampapi.techcs.io/api/fe/v1/account/given-offers")
           .then(res => {
             console.log("Given Offers: ", res)
             setListOffers(res.data);
@@ -69,8 +71,8 @@ const Account = () => {
         <div className="offer-container">
           <div className="offers-tab">
             <ul>
-              <li onClick={() => history.push("/account/given-offers")}>Teklif Aldıklarım<hr /></li>
-              <li onClick={() => history.push("/account/received-offers")}>Teklif Verdiklerim<hr /></li>
+              <li onClick={() => history.push("/account/given-offers")}>Teklif Verdiklerim<hr /></li>
+              <li onClick={() => history.push("/account/received-offers")}>Teklif Aldıklarım<hr /></li>
             </ul>
           </div>
           <div className="offers">
@@ -86,15 +88,19 @@ const Account = () => {
                       <p>Alınan Teklif: <span>{item.offeredPrice} TL</span></p>
                     </div>
                     <div className="offer-btns">
-                      <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
                       {
                         (() => {
                           if (item.status === "rejected") {
-                            return (<span>Reddedildi</span>)
+                            return (<span style={{ color: '#F77474' }}>Reddedildi</span>)
                           } else if (item.status === "accepted") {
-                            return (<span>Onaylandı</span>)
+                            return (<span style={{ color: '#4B9CE2' }}>Onaylandı</span>)
                           } else {
-                            return (<span>Cevaplanmadı</span>)
+                            return (
+                              <>
+                                <button onClick={() => acceptOffer(item.id)}>Onayla</button>
+                                <button onClick={() => rejectOffer(item.id)}>Reddet</button>
+                              </>
+                            )
                           }
                         })()
                       }
@@ -108,9 +114,11 @@ const Account = () => {
                     <img src={item.product.imageUrl} alt="product-img" />
                     <div className="product-info">
                       <p>{item.product.title}</p>
-                      <p>Alınan Teklif: <span>{item.offeredPrice} TL</span></p>
+                      <p>Verilen Teklif: <span>{item.offeredPrice} TL</span></p>
                     </div>
                     <div className="offer-btns">
+
+                      <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
                       {
                         (() => {
                           if (item.status === "rejected") {
@@ -123,10 +131,7 @@ const Account = () => {
                             )
                           } else {
                             return (
-                              <>
-                                <button onClick={() => acceptOffer(item.id)}>Onayla</button>
-                                <button onClick={() => rejectOffer(item.id)}>Reddet</button>
-                              </>
+                              <span>Cevap Bekleniyor...</span>
                             )
                           }
                         })()

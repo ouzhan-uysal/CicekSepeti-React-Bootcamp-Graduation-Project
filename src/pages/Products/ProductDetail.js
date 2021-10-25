@@ -30,13 +30,9 @@ const ProductDetail = () => {
         })
     })();
   }, [id])
+  console.log("Buy Modal Showing: ", showBuyModal)
 
   const cancelOffer = async id => {
-    // axios.delete(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${id}`)
-    //   .then(res => {
-    //     console.log("cancelOffer Res: ", res)
-    //   }).catch(err => console.log(err))
-
     // FIXME: Fetch
     fetch(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${id}`, {
       method: 'DELETE',
@@ -81,18 +77,20 @@ const ProductDetail = () => {
                   !product.isSold
                     ?
                     <>
-                      {productOffer && <div className="offer"> <p>Verilen Teklif: <strong>{productOffer} TL</strong></p> </div>}
+                      {
+                        productOffer && <div className="offer"> <p>Verilen Teklif: <strong>{productOffer} TL</strong></p> </div>
+                      }
                       <div className="details-btn">
                         <button onClick={() => setShowBuyModal(true)}>Satın Al</button>
                         {
-                          product.isOfferable && !hasBeenOffered ?
-                            <>
-                              <button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>
-                              <button onClick={() => cancelOffer(product.id)}>Teklifi Geri Çek</button>
-                            </>
-                            :
-                            <button onClick={() => cancelOffer(product.id)}>Teklifi Geri Çek</button>
-                          // FIXME: redux tan ürünün offerPrice'ı var ise teklifi geri çek butonu koyacam.
+                          (() => {
+                            if (hasBeenOffered) {
+                              return (<button onClick={() => { cancelOffer(product.id); setHasBeenOffered(!hasBeenOffered) }}>Teklifi Geri Çek</button>)
+                            }
+                            if (product.isOfferable) {
+                              return (<button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>)
+                            }
+                          })()
                         }
                         <BuyModal show={showBuyModal} close={() => setShowBuyModal(false)} id={product.id} isSold={() => product.isSold = false} />
                         <OfferModal show={showOfferModal} close={() => setShowOfferModal(false)} imgUrl={product.imageUrl} title={product.title} price={product.price} id={product.id} offerPrice={() => setProductOffer()} offered={() => setHasBeenOffered(!hasBeenOffered)} />

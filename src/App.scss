@@ -26,11 +26,10 @@ body {
       // Login Page
       .login-container {
         display: grid;
-        img {
-          padding-top: 3rem;
-          padding-left: 25%;
-        }
+        justify-items: center;
+        justify-content: center;
         .form-container {
+          display: grid;
           justify-content: center;
           margin: 0 1rem;
           width: 355px;
@@ -55,10 +54,8 @@ body {
       // Register Page
       .register-container {
         display: grid;
-        img {
-          padding-top: 3rem;
-          padding-left: 25%;
-        }
+        justify-items: center;
+        justify-content: center;
         .form-container {
           display: grid;
           justify-content: center;
@@ -89,7 +86,6 @@ body {
       grid-template-columns: 1fr;
       padding: 0;
       margin: 0;
-      width: 90vw;
       .header-logo {
         margin: 0 !important;
       }
@@ -97,6 +93,7 @@ body {
         display: grid;
         grid-template-columns: auto auto;
         margin: 0.1rem 0 !important;
+        justify-self: end;
         button {
           &:nth-child(1) {
             overflow: hidden;
@@ -127,7 +124,6 @@ body {
     .account-container {
       margin: 0 !important;
       .user-container {
-
       }
     }
 

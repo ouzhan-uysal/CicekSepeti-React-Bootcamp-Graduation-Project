@@ -11,13 +11,49 @@ export const DetailWrapper = styled.div`
     max-height: 100%;
   }
   .details {
+    h2 {
+      text-align: left;
+      font: normal normal normal 34px/23px Nunito;
+      letter-spacing: 0px;
+      color: #555555;
+    }
     padding: 1em;
     form {
       display:grid;
       grid-template-columns: 1fr 1fr;
+      label {
+        text-align: left;
+        font: normal normal bold 15px/20px Nunito;
+        letter-spacing: 0px;
+        color: #525252;
+      }
+      input {
+        text-align: left;
+        font: normal normal normal 15px/20px Nunito;
+        letter-spacing: 0px;
+        color: #525252;
+      }
+    }
+    &:last-child {
+      h3 {
+        text-align: left;
+        font: normal normal bold 18px/24px Nunito;
+        letter-spacing: 0px;
+        color: #525252;
+      }
+      p {
+        text-align: left;
+        font: normal normal normal 15px/23px Nunito;
+        letter-spacing: 0px;
+        color: #555555;
+      }
     }
   }
   .price {
+    text-align: left;
+    font: normal normal bold 25px/23px Nunito;
+    letter-spacing: 0px;
+    color: #525252;
   }
   .offer {
     p {

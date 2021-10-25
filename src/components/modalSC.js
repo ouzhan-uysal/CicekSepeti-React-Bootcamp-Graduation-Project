@@ -31,6 +31,9 @@ export const BuyModalWrapper = styled.div`
         font: normal normal normal 15px/23px Nunito;
         letter-spacing: 0px;
         color: #555555;
+        input[type="radio"]:checked + span {
+          color: red;
+        }
       }
       .modal-btn {
         button {

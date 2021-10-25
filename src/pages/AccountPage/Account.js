@@ -24,14 +24,14 @@ const Account = () => {
       if (offers === "received-offers") {
         axios.get("https://bootcampapi.techcs.io/api/fe/v1/account/received-offers")
           .then(res => {
-            console.log("Received Offers: ", res)
+            // console.log("Received Offers: ", res);
             setListOffers(res.data);
           }).catch(err => console.log(err))
       } else {
         // Teklif aldıklarım
         axios.get("https://bootcampapi.techcs.io/api/fe/v1/account/given-offers")
           .then(res => {
-            console.log("Given Offers: ", res)
+            // console.log("Given Offers: ", res);
             setListOffers(res.data);
           }).catch(err => console.log(err))
       }
@@ -42,21 +42,21 @@ const Account = () => {
   const purchaseOffer = async id => {
     await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`)
       .then(res => {
-        console.log("Cancel: ", res)
+        // console.log("Purchase: ", res)
       }).catch(err => console.log(err))
   }
   // Ürününe gelen teklifi reddet.
   const rejectOffer = async id => {
     await axios.post(`https://bootcampapi.techcs.io/api/fe/v1/account/reject-offer/${id}`)
       .then(res => {
-        console.log("Reject: ", res)
+        // console.log("Reject: ", res)
       }).catch(err => console.log(err))
   }
   // Ürününe gelen teklifi kabul et.
   const acceptOffer = async id => {
     axios.put(`https://bootcampapi.techcs.io/api/fe/v1/account/accept-offer/${id}`)
       .then(res => {
-        console.log("Accept: ", res)
+        // console.log("Accept: ", res)
       }).catch(err => console.log(err))
   }
 
@@ -118,7 +118,6 @@ const Account = () => {
                     </div>
                     <div className="offer-btns">
 
-                      <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
                       {
                         (() => {
                           if (item.status === "rejected") {
@@ -127,7 +126,10 @@ const Account = () => {
                             )
                           } else if (item.status === "accepted") {
                             return (
-                              <span>Onaylandı</span>
+                              <>
+                                <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
+                                <span>Onaylandı</span>
+                              </>
                             )
                           } else {
                             return (

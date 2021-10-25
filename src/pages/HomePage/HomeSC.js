@@ -37,9 +37,9 @@ export const HomeWrapper = Styled.div`
     }
     .product-item {
       background-color: #fff;
-      border-radius: .5em;
-      margin: 1em;
-      padding: .5em;
+      border-radius: .5rem;
+      margin: .5rem;
+      padding: .5rem;
       display: grid;
       justify-content: center;
       cursor: pointer;

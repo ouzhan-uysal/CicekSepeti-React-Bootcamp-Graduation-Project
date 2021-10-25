@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from '../HomePage/Header';
 import { DetailWrapper } from './ProductDetailSC';
 import { BuyModal, OfferModal } from '../../components/modal';
+import { useSelector } from 'react-redux';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState([]);
@@ -11,9 +12,19 @@ const ProductDetail = () => {
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [hasBeenOffered, setHasBeenOffered] = useState(false);
+  const [offerID, setOfferID] = useState("");
 
   let history = useHistory();
   const { id } = useParams();
+
+  const { offer } = useSelector(state => state)
+  // console.log("Redux Offer: ", offer)
+  useEffect(() => {
+    if (offer.offerID) {
+      console.log("OK")
+    }
+    setOfferID(offer.offerID);
+  }, [offer.offerID])
 
   useEffect(() => {
     localStorage.getItem("email") || history.push("/login")
@@ -23,14 +34,13 @@ const ProductDetail = () => {
     (async () => {
       await axios.get(`https://bootcampapi.techcs.io/api/fe/v1/product/${id}`)
         .then(res => {
-          console.log("ProductDetail Res: ", res)
+          // console.log("ProductDetail Res: ", res)
           setProduct(res.data)
         }).catch(err => {
           console.log(err);
         })
     })();
   }, [id])
-  console.log("Buy Modal Showing: ", showBuyModal)
 
   const cancelOffer = async id => {
     // FIXME: Fetch
@@ -84,8 +94,8 @@ const ProductDetail = () => {
                         <button onClick={() => setShowBuyModal(true)}>Satın Al</button>
                         {
                           (() => {
-                            if (hasBeenOffered) {
-                              return (<button onClick={() => { cancelOffer(product.id); setHasBeenOffered(!hasBeenOffered) }}>Teklifi Geri Çek</button>)
+                            if (offerID) {
+                              return (<button onClick={() => { cancelOffer(product.id); setOfferID("") }}>Teklifi Geri Çek</button>)
                             }
                             if (product.isOfferable) {
                               return (<button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>)

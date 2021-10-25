@@ -41,19 +41,13 @@ export const DetailWrapper = styled.div`
         letter-spacing: 0px;
         color: #525252;
       }
-      p {
-        text-align: left;
-        font: normal normal normal 15px/23px Nunito;
-        letter-spacing: 0px;
-        color: #555555;
-      }
     }
-  }
-  .price {
-    text-align: left;
-    font: normal normal bold 25px/23px Nunito;
-    letter-spacing: 0px;
-    color: #525252;
+    .price {
+      text-align: left;
+      font: normal normal bold 25px/23px Nunito;
+      letter-spacing: 0px;
+      color: #525252;
+    }
   }
   .offer {
     p {

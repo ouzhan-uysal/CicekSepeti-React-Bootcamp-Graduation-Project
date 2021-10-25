@@ -1,10 +1,11 @@
-import { SET_PRODUCT_OFFER, CANCEL_PRODUCT_OFFER } from "../actions/actionTypes";
+import { SET_PRODUCT_OFFER, CANCEL_PRODUCT_OFFER, SET_OFFERED_PRODUCT_ID } from "../actions/actionTypes";
 
 const INITIAL_STATE = {
   product: "",
   productID: "",
   price: 0,
-  offer_price: 0,
+  offerPrice: 0,
+  offerID: ""
 }
 
 const offerReducer = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,8 @@ const offerReducer = (state = INITIAL_STATE, action) => {
       return { state: action.payload }
     case CANCEL_PRODUCT_OFFER:
       return { ...state, state }
+    case SET_OFFERED_PRODUCT_ID:
+      return { ...state, offerID: action.payload }
     default:
       return { ...state }
   }

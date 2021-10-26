@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { regex } from '../../contants';
 import { RegisterWrapper } from './RegisterSC';
 
 const Register = () => {
@@ -16,7 +17,6 @@ const Register = () => {
 
   const registerBtn = async e => {
     e.preventDefault();
-    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (regex.test(userEmail)) {
       // if: email and pass is correct --> routing home page
       if (8 < userPassword.length && userPassword.length < 20) {
@@ -35,22 +35,36 @@ const Register = () => {
             password: userPassword,
           }),
         }).then(res => {
-          // console.log("Register Res: ", res)
-          localStorage.setItem("email", userEmail);
+          console.log("Register Res: ", res)
+          if(res.ok) {
+            localStorage.setItem("email", userEmail);
+          }
           return res.json();
         }).then(json => {
-          // console.log(json)
+          console.log(json)
           setIsLoading(false);
-          toast.success('Kayıt işlemi başarılı', {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          localStorage.setItem("token", json.access_token);
+          if (json.access_token) {
+            toast.success('Kayıt işlemi başarılı', {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            localStorage.setItem("token", json.access_token);
+          } else {
+            toast.error('Geçersiz Eposta yada Şifre', {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
         });
       } else {  // if pass is not correct
         toast.error('Geçerli bir şifre giriniz.', {

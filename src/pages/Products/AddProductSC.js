@@ -76,6 +76,10 @@ export const ProductWrapper = styled.div`
       border: 1px dashed #B1B1B1;
       border-radius: 10px;
       text-align: center;
+      .upload-img {
+        width: 50%;
+        height: 50%;
+      }
       p {
         // Drag and Drop File
         input[type='file'] {

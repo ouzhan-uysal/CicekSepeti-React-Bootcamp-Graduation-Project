@@ -4,6 +4,7 @@ import Header from '../HomePage/Header';
 import { ProductWrapper } from './AddProductSC';
 import Switch from 'react-switch';
 import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 
 const AddProduct = () => {
   const [brands, setBrands] = useState([]);
@@ -13,7 +14,7 @@ const AddProduct = () => {
 
   // Input States:
   const [productName, setProductName] = useState("");
-  // const [productImgUrl, setProductImgUrl] = useState("");
+  const [productImgUrl, setProductImgUrl] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [productDescription, setProductDescription] = useState("");
   const [productCategory, setProductCategory] = useState("");
@@ -22,8 +23,9 @@ const AddProduct = () => {
   const [productStatus, setProductStatus] = useState("");
   const [isOfferable, setIsOfferable] = useState(false);
 
-  let history = useHistory();
+  const [baseImage, setBaseImage] = useState("");
 
+  let history = useHistory();
   useEffect(() => {
     localStorage.getItem("email") || history.push("/login")
   }, [history])
@@ -80,40 +82,50 @@ const AddProduct = () => {
     })();
   }, [])
 
-  // FIXME: Fetch image url (Yapamadığım için aşağıda önceden manuel çektiğim resmi sunucuya yolladım.)
+  // Get image url
   const handleFile = async (e) => {
-    let file = e.target.files[0]
-    console.log(file)
-    // FIXME:
-    // let reader = new FileReader();
-    // reader.readAsDataURL(file);
-    // reader.onload = (e) => {
-    //   const fileBinary = e.target.result.split(",")[1]
-    //   // console.log(fileBinary)
-    //   fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
-    //     method: 'POST',
-    //     headers: {
-    //       accept: '/*',
-    //       'Content-Type': 'multipart/form-data',
-    //       'Authorization': `Bearer ${localStorage.getItem("token")}`,
-    //     },
-    //     body: JSON.stringify({ file: fileBinary })
-    //   })
-    //     .then(res => {
-    //       console.log("File Res: ", res);
-    //       if (res.ok) {
-    //         setProductImgUrl(res.url);
-    //       }
-    //       return res.json();
-    //     })
-    //     .then(data => console.log(data))
-    //     .catch(err => console.log(err))
-    // }
+    console.log("Burada img url'i fetch edemediğim için ürün oluştururken önceden kullandığım bir resmin görüntüsünü yolladım.");
+    const file = e.target.files[0];
+    console.log(file);
+    const base64 = await convertBase64(file);
+    setBaseImage(base64);
+    // FIXME: 
+    fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
+      method: 'POST',
+      headers: {
+        accept: '/*',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: { file: file },
+    })
+      .then(res => {
+        console.log("File Res: ", res);
+        if (res.ok) {
+          setProductImgUrl(res.url);
+        }
+        return res.json();
+      })
+      .then(data => console.log(data))
+      .catch(err => console.log(err))
+  }
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = (() => {
+        resolve(fileReader.result);
+      });
+      fileReader.onerror = ((err) => {
+        reject(err);
+      });
+    });
   }
 
   const createNewProduct = async () => {
-    if (!productPrice || productName.length < 3 || productStatus.length < 1 || productColor.length < 1 || productBrand.length < 1 || productCategory.length < 1 || productDescription.length < 1) {
-      alert("Boş alanları doldurunuz.")
+    ;
+    if (!productStatus || !productColor || !productBrand || !productCategory || productPrice <= 0) {
+      alert("Ürün bilgileri boş bırakılamaz.")
     } else {
       fetch('https://bootcampapi.techcs.io/api/fe/v1/product/create', {
         method: 'POST',
@@ -138,11 +150,38 @@ const AddProduct = () => {
       }).then(res => {
         // console.log("Create New Product Res: ", res)
         if (res.ok) {
-          console.log("Add Res: ", res)
+          // console.log("Add Res: ", res)
+          toast.success('Yeni ürün eklendi', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          setProductName("");
+          setProductPrice(0);
+          setProductDescription("");
+          setProductCategory("");
+          setProductBrand("");
+          setProductColor("");
+          setProductStatus("");
+          setIsOfferable(false);
         }
         return res.json();
       }).then(json => {
         console.log(json)
+        toast.warning(json.message[0], {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }).catch(err => console.log(err));
     }
   }
@@ -201,7 +240,7 @@ const AddProduct = () => {
             </select>
 
             <label htmlFor="price">Fiyat</label>
-            <input type="number" id="price" placeholder="TL" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
+            <input type="number" id="price" min="0" placeholder="TL" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
 
             <label htmlFor="offer">Teklif Opsiyonu
               <Switch onChange={() => setIsOfferable(prevCheck => !prevCheck)} checked={isOfferable} />
@@ -212,13 +251,21 @@ const AddProduct = () => {
         <div className="product-img">
           <h2>Ürün Görseli</h2>
           <div className="upload-file">
-            <img src="/upload-img-logo.svg" alt="set-img" />
-            <p>Sürükleyip bırakarak yükle veya
-              <input id="product-file" type="file" accept="image/png, image/jpeg" onChange={handleFile}></input>
-            </p>
+            {
+              !baseImage
+                ?
+                <>
+                  <img src="/upload-img-logo.svg" alt="set-img" />
+                  <p>Yüklemek istediğiniz dosyayı seçiniz.
+                    <input id="product-file" type="file" accept="image/png, image/jpeg" onChange={handleFile}></input>
+                  </p>
+                </>
+                :
+                <img className="upload-img" src={baseImage} alt="uploading-file" />
+            }
             <p>PNG ve JPEG Dosya boyutu: max. 100kb</p>
           </div>
-          <button onClick={() => createNewProduct}>Kaydet</button>
+          <button onClick={createNewProduct}>Kaydet</button>
         </div>
       </ProductWrapper>
     </>

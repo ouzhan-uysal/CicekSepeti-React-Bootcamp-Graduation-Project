@@ -9,6 +9,7 @@ import { LoginWrapper } from './LoginSC';
 // popup
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { regex } from '../../contants';
 
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -26,10 +27,8 @@ const Login = () => {
   const loginBtn = async e => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: Fetch:
-    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (regex.test(userEmail)) {
-      fetch('https://bootcampapi.techcs.io/api/fe/v1/authorization/signin', {
+      return fetch('https://bootcampapi.techcs.io/api/fe/v1/authorization/signin', {
         method: 'POST',
         headers: {
           accept: '/*',

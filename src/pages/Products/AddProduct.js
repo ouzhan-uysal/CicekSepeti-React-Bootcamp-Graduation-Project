@@ -80,7 +80,7 @@ const AddProduct = () => {
     })();
   }, [])
 
-  // FIXME: Fetch url from api
+  // FIXME: Fetch image url (Yapamadığım için aşağıda önceden manuel çektiğim resmi sunucuya yolladım.)
   const handleFile = async (e) => {
     let file = e.target.files[0]
     console.log(file)
@@ -136,7 +136,7 @@ const AddProduct = () => {
           isOfferable: isOfferable
         }),
       }).then(res => {
-        // console.log("Login Res: ", res)
+        // console.log("Create New Product Res: ", res)
         if (res.ok) {
           console.log("Add Res: ", res)
         }

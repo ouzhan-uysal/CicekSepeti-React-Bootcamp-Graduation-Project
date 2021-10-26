@@ -41,8 +41,8 @@ const Login = () => {
           password: userPassword,
         }),
       }).then(res => {
-        // console.log("Login Res: ", res)
-        if (res['ok']) {
+        console.log("Login Res: ", res)
+        if (res.ok) {
           toast.success('Giriş işlemi başarılı', {
             position: "top-right",
             autoClose: 2500,

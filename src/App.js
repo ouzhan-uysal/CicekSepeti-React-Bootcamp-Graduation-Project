@@ -11,6 +11,7 @@ import Home from './pages/HomePage/Home';
 import Account from './pages/AccountPage/Account';
 import AddProduct from './pages/Products/AddProduct';
 import ProductDetail from './pages/Products/ProductDetail';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" component={Home} />
         </Switch>
       </Router>
+      <ToastContainer />
     </>
   );
 }

@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const Account = () => {
+  const [product, setProduct] = useState([]);
+
   let history = useHistory();
   const { offers } = useParams();
   const [listOffers, setListOffers] = useState([]);
@@ -59,6 +61,7 @@ const Account = () => {
         // console.log("Accept: ", res)
       }).catch(err => console.log(err))
   }
+  // listOffers.forEach(item => console.log(item))
 
   return (
     <>
@@ -83,27 +86,31 @@ const Account = () => {
                 listOffers.map(item => (
                   <div className="offer-item" key={item.id}>
                     <img src={item.product.imageUrl} alt="product-img" />
-                    <div className="product-info">
-                      <p>{item.product.title}</p>
-                      <p>Alınan Teklif: <span>{item.offeredPrice} TL</span></p>
-                    </div>
-                    <div className="offer-btns">
-                      {
-                        (() => {
-                          if (item.status === "rejected") {
-                            return (<span style={{ color: '#F77474' }}>Reddedildi</span>)
-                          } else if (item.status === "accepted") {
-                            return (<span style={{ color: '#4B9CE2' }}>Onaylandı</span>)
-                          } else {
-                            return (
-                              <>
-                                <button onClick={() => acceptOffer(item.id)}>Onayla</button>
-                                <button onClick={() => rejectOffer(item.id)}>Reddet</button>
-                              </>
-                            )
-                          }
-                        })()
-                      }
+                    <div className="product">
+                      <div className="product-info">
+                        <p>{item.product.title}</p>
+                        <p>Alınan Teklif: <span>{item.offeredPrice} TL</span></p>
+                      </div>
+                      <div className="offer-btns">
+                        {
+                          (() => {
+                            if (item.status === "rejected") {
+                              return (<span style={{ color: '#F77474' }}>Reddedildi</span>)
+                            } else if (item.status === "accepted") {
+                              return (<span style={{ color: '#4B9CE2' }}>Onaylandı</span>)
+                            } else if (item.isSold === "sold") {
+                              return (<span style={{ color: '#46AF32' }}>Ürün satıldı</span>)
+                            } else {
+                              return (
+                                <>
+                                  <button onClick={() => acceptOffer(item.id)}>Onayla</button>
+                                  <button onClick={() => rejectOffer(item.id)}>Reddet</button>
+                                </>
+                              )
+                            }
+                          })()
+                        }
+                      </div>
                     </div>
                   </div>
                 ))
@@ -112,32 +119,29 @@ const Account = () => {
                 listOffers.map(item => (
                   <div className="offer-item" key={item.id}>
                     <img src={item.product.imageUrl} alt="product-img" />
-                    <div className="product-info">
-                      <p>{item.product.title}</p>
-                      <p>Verilen Teklif: <span>{item.offeredPrice} TL</span></p>
-                    </div>
-                    <div className="offer-btns">
-
-                      {
-                        (() => {
-                          if (item.status === "rejected") {
-                            return (
-                              <span>Reddedildi</span>
-                            )
-                          } else if (item.status === "accepted") {
-                            return (
-                              <>
-                                <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
-                                <span>Onaylandı</span>
-                              </>
-                            )
-                          } else {
-                            return (
-                              <span>Cevap Bekleniyor...</span>
-                            )
-                          }
-                        })()
-                      }
+                    <div className="product">
+                      <div className="product-info">
+                        <p>{item.product.title}</p>
+                        <p>Verilen Teklif: <span>{item.offeredPrice} TL</span></p>
+                      </div>
+                      <div className="offer-btns">
+                        {
+                          !item.isSold && <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
+                        }
+                        {
+                          (() => {
+                            if (item.status === "rejected") {
+                              return (<span style={{ color: '#F77474' }}>Reddedildi</span>)
+                            } else if (item.status === "accepted") {
+                              return (<span style={{ color: '#4B9CE2' }}>Onaylandı</span>)
+                            } else if (item.isSold === "sold") {
+                              return (<span style={{ color: '#46AF32' }}>Ürün Satıldı</span>)
+                            } else {
+                              return (<span>Cevap Bekleniyor...</span>)
+                            }
+                          })()
+                        }
+                      </div>
                     </div>
                   </div>
                 ))

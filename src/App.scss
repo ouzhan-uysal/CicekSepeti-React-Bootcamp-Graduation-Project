@@ -19,7 +19,7 @@ body {
     #root {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 7vh 1fr;
+      grid-template-rows: auto 1fr auto;
       gap: 1rem;
       background-color: #f2f2f2;
       .main-img {
@@ -27,6 +27,7 @@ body {
       }
       // Login Page
       .login-container {
+        margin-top: 2rem;
         display: grid;
         justify-items: center;
         justify-content: center;
@@ -55,6 +56,7 @@ body {
       }
       // Register Page
       .register-container {
+        margin-top: 2rem;
         display: grid;
         justify-items: center;
         justify-content: center;
@@ -86,7 +88,7 @@ body {
       #header-container {
         display: grid;
         grid-template-columns: auto auto;
-        padding: 0 1rem;
+        padding: 0.5rem 1rem;
         margin: 0;
         .header-logo {
           margin: 0 !important;
@@ -105,9 +107,11 @@ body {
             }
           }
         }
-        .modal-container {
-          .modal-content {
-          }
+      }
+      .modal-container {
+        background-color: rgba(75, 156, 226, 0.6) !important;
+        .modal-content {
+          margin: 0 1rem;
         }
       }
 
@@ -144,42 +148,87 @@ body {
         img {
         }
         .details {
-        }
-        .offer {
-        }
-        .details-btn {
-          position: fixed;
-          bottom: 1rem;
-        }
-        .modal-container {
-          background-color: rgba(75, 156, 226, 0.6) !important;
+          padding: 0;
+          .details-btn {
+            position: fixed;
+            bottom: 0;
+            background-color: #fff;
+            width: 100%;
+          }
         }
       }
 
       // Account Page:
       #account-container {
-        margin: 0 1rem;
+        margin: 0 0.5rem;
         gap: 1rem;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
         .user-container {
           margin: 0;
         }
         .offer-container {
           padding: 0;
           margin: 0;
-          .offer-tab {
-            justify-self: center;
+          .offers-tab {
+            ul {
+              li {
+                margin-right: 1.5rem;
+              }
+            }
           }
           .offers {
             .offer-item {
-              grid-template-rows: auto auto;
+              grid-template-columns: 20vw auto;
+              border: 1px solid #f2f2f2;
+              border-radius: 8px;
+              padding: 1rem;
+              img {
+                border-radius: 8px;
+              }
+              .product {
+                grid-template-columns: auto;
+                white-space: nowrap;
+                .product-info {
+                  p {
+                    text-align: left;
+                    font: normal normal normal 18px/23px Nunito;
+                    letter-spacing: 0px;
+                    color: #555555;
+                    &:last-child {
+                      font: normal normal normal 15px/20px Nunito;
+                      letter-spacing: 0px;
+                      color: #b1b1b1;
+                      background-color: #f2f2f2;
+                      width: auto;
+                      span {
+                        font: normal normal bold 15px/20px Nunito;
+                        letter-spacing: 0px;
+                        color: #525252;
+                      }
+                    }
+                  }
+                }
+                .offer-btns {
+                  text-align: center;
+                }
+              }
             }
           }
         }
       }
 
       // Add Product Page:
-      .add-container {
-        margin: 0 !important;
+      #add-container {
+        margin: 0 1rem !important;
+        grid-template-columns: 1fr;
+        .product-img {
+          display: grid;
+          button {
+            position: relative;
+            width: auto;
+          }
+        }
       }
     }
   }

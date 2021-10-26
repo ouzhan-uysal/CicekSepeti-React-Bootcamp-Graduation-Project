@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 const PurchaseProduct = async (id) => {
   await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`)
     .then(res => {
-      // console.log("Purchase Res: ", res);
+      console.log("Purchase Res: ", res);
     }).catch(err => console.log(err))
 }
 
@@ -31,7 +31,6 @@ export const BuyModal = ({ show, close, id }) => {
     </BuyModalWrapper >
   )
 }
-
 
 export const OfferModal = ({ show, close, imgUrl, title, price, id, offered }) => {
   const [offerPrice, setOfferPrice] = useState(0);

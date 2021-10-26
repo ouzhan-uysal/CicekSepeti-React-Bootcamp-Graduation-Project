@@ -11,7 +11,6 @@ export const BuyModalWrapper = styled.div`
     align-items: center;
     justify-content: center;
     .modal-content {
-      width: 20rem;
       background-color: #fff;
       display: grid;
       grid-template-columns: 1fr;

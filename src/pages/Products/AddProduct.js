@@ -94,9 +94,10 @@ const AddProduct = () => {
       method: 'POST',
       headers: {
         accept: '/*',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
       },
-      body: { file: file },
+      body: { file: base64 },
     })
       .then(res => {
         console.log("File Res: ", res);

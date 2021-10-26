@@ -22,7 +22,6 @@ const Register = () => {
       if (8 < userPassword.length && userPassword.length < 20) {
         e.preventDefault();
         setIsLoading(true);
-
         return fetch('https://bootcampapi.techcs.io/api/fe/v1/authorization/signin', {
           method: 'POST',
           headers: {

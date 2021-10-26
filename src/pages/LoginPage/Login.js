@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
-// third part
 import { useHistory } from 'react-router-dom';
-
-// style
+import { regex } from '../../contants';
 import { LoginWrapper } from './LoginSC';
-
 // popup
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { regex } from '../../contants';
 
 const Login = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -19,7 +14,6 @@ const Login = () => {
   let history = useHistory();
 
   // if already login --> routing index page
-  // console.log()
   useEffect(() => {
     localStorage.getItem('email') && history.push("/")
   }, [history, isLoading])

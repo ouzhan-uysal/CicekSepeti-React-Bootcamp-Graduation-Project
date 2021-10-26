@@ -77,7 +77,7 @@ const Register = () => {
   }
 
   return (
-    <RegisterWrapper>
+    <RegisterWrapper id="register-main">
       <div className="main-img">
         <img src="/group52.png" alt="main_img" />
       </div>

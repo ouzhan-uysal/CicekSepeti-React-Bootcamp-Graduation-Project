@@ -41,7 +41,7 @@ const Login = () => {
           password: userPassword,
         }),
       }).then(res => {
-        console.log("Login Res: ", res['ok'])
+        // console.log("Login Res: ", res)
         if (res['ok']) {
           toast.success('Giriş işlemi başarılı', {
             position: "top-right",
@@ -66,7 +66,7 @@ const Login = () => {
         }
         return res.json();
       }).then(json => {
-        console.log(json)
+        // console.log(json)
         setIsLoading(false);
         if (json.access_token) {
           localStorage.setItem("token", json.access_token);
@@ -86,7 +86,7 @@ const Login = () => {
   }
 
   return (
-    <LoginWrapper>
+    <LoginWrapper id="login-main">
       <div className="main-img">
         <img src="/group52.png" alt="main_img" />
       </div>

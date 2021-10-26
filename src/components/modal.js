@@ -3,12 +3,24 @@ import React, { useState } from 'react';
 import { BuyModalWrapper, OfferModalWrapper } from './modalSC';
 import { SetOfferedProductId } from '../actions/offerAction';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 // TODO: Purchasing processes:
 const PurchaseProduct = async (id) => {
   await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`)
     .then(res => {
-      console.log("Purchase Res: ", res);
+      // console.log("Purchase Res: ", res);
+      if (res.status === 200) {
+        toast.success('Satın Alındı', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     }).catch(err => console.log(err))
 }
 
@@ -52,11 +64,20 @@ export const OfferModal = ({ show, close, imgUrl, title, price, id, offered }) =
       // console.log("Offer Res: ", res);
       return res.json();
     }).then(json => {
-      console.log(json)
+      // console.log(json)
       if (json.id) {
-        dispatch(SetOfferedProductId(json.id));
+        toast.success('Teklif verildi', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        dispatch(SetOfferedProductId(json.id, Number(offerPrice)));
       } else {
-        console.log("ID not found in json.")
+        console.log(json.message)
       }
     }).catch(err => console.log(err))
   }

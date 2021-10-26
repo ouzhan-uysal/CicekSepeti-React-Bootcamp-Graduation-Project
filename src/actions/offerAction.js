@@ -17,11 +17,12 @@ export const WithdrawOffer = (offerInfo) => {
   })
 }
 
-export const SetOfferedProductId = (id) => {
+export const SetOfferedProductId = (id, price) => {
   return {
     type: SET_OFFERED_PRODUCT_ID,
     payload: {
-      offerID: id
+      offerID: id,
+      offerPrice: price
     }
   }
 }

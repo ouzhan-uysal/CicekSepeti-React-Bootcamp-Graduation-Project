@@ -67,9 +67,11 @@ export const ProductWrapper = styled.div`
   hr {
   }
   .product-img {
-    position: relative;
+    display: grid;
     padding: 0 1em;
-    div {
+    .upload-file {
+      display: grid;
+      justify-items: center;
       padding: 1em;
       border: 1px dashed #B1B1B1;
       border-radius: 10px;
@@ -84,12 +86,11 @@ export const ProductWrapper = styled.div`
       }
     }
     button {
-      position: absolute;
+      align-self: self-end;
+      justify-self: end;
+      width: 50%;
+      height: 3rem;
       margin: 1em;
-      right: 0;
-      bottom: 0;;
-      width: 315px;
-      height: 45px;
       border: none;
       background-color: #4B9CE2;
       color: #fff;

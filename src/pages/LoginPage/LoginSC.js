@@ -3,7 +3,6 @@ import Styled from 'styled-components';
 export const LoginWrapper = Styled.div`
   display: grid;
   grid-template-columns: auto auto;
-  justify-content: center;
   .main-img {
     max-height: 100vh;
     img {

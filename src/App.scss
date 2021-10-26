@@ -25,6 +25,12 @@ body {
       .main-img {
         display: none;
       }
+      #login-main {
+        justify-content: center;
+      }
+      #register-main {
+        justify-content: center;
+      }
       // Login Page
       .login-container {
         margin-top: 2rem;
@@ -151,7 +157,9 @@ body {
           padding: 0;
           .details-btn {
             position: fixed;
+            right: 0;
             bottom: 0;
+            padding: 1rem 0;
             background-color: #fff;
             width: 100%;
           }
@@ -226,7 +234,7 @@ body {
           display: grid;
           button {
             position: relative;
-            width: auto;
+            width: 100%;
           }
         }
       }

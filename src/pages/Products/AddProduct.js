@@ -88,24 +88,25 @@ const AddProduct = () => {
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
-      // const fileBinary = e.target.result.split(",")[1]
-      fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
-        method: 'POST',
-        headers: {
-          accept: '/*',
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-        .then(res => {
-          console.log("File Res: ", res);
-          if (res.ok) {
-            setProductImgUrl(res.url);
-          }
-          return res.json();
-        })
-        .then(data => console.log(data))
-        .catch(err => console.log(err))
+      const fileBinary = e.target.result.split(",")[1]
+      console.log("x2", fileBinary)
+      // fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
+      //   method: 'POST',
+      //   headers: {
+      //     accept: '/*',
+      //     'Content-Type': 'multipart/form-data',
+      //     'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      //   },
+      // })
+      //   .then(res => {
+      //     console.log("File Res: ", res);
+      //     if (res.ok) {
+      //       setProductImgUrl(res.url);
+      //     }
+      //     return res.json();
+      //   })
+      //   .then(data => console.log(data))
+      //   .catch(err => console.log(err))
     }
   }
 
@@ -209,7 +210,7 @@ const AddProduct = () => {
         <hr />
         <div className="product-img">
           <h2>Ürün Görseli</h2>
-          <div>
+          <div className="upload-file">
             <img src="/upload-img-logo.svg" alt="set-img" />
             <p>Sürükleyip bırakarak yükle veya
               <input id="product-file" type="file" accept="image/png, image/jpeg" onChange={handleFile}></input>

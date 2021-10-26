@@ -4,13 +4,13 @@ import { AccountWrapper } from './AccountSC';
 import { useHistory, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Account = () => {
-  const [product, setProduct] = useState([]);
-
   let history = useHistory();
   const { offers } = useParams();
   const [listOffers, setListOffers] = useState([]);
+  const [changes, setChanges] = useState(false);
 
   // authentication for user
   const auth = useSelector(state => state.auth);
@@ -38,19 +38,32 @@ const Account = () => {
           }).catch(err => console.log(err))
       }
     })();
-  }, [offers])
+  }, [offers, changes])
 
   // Teklif Yaptığın ürünü satın al.
   const purchaseOffer = async id => {
     await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`)
       .then(res => {
         // console.log("Purchase: ", res)
+        if (res['ok']) {
+          setChanges(!changes);
+          toast.success('Satın Alındı', {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       }).catch(err => console.log(err))
   }
   // Ürününe gelen teklifi reddet.
   const rejectOffer = async id => {
     await axios.post(`https://bootcampapi.techcs.io/api/fe/v1/account/reject-offer/${id}`)
       .then(res => {
+        setChanges(!changes);
         // console.log("Reject: ", res)
       }).catch(err => console.log(err))
   }
@@ -58,6 +71,7 @@ const Account = () => {
   const acceptOffer = async id => {
     axios.put(`https://bootcampapi.techcs.io/api/fe/v1/account/accept-offer/${id}`)
       .then(res => {
+        setChanges(!changes);
         // console.log("Accept: ", res)
       }).catch(err => console.log(err))
   }
@@ -126,7 +140,7 @@ const Account = () => {
                       </div>
                       <div className="offer-btns">
                         {
-                          !item.isSold && <button onClick={() => purchaseOffer(item.id)}>Satın Al</button>
+                          !item.isSold && <button onClick={() => purchaseOffer(item.product.id)}>Satın Al</button>
                         }
                         {
                           (() => {

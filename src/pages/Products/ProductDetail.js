@@ -4,11 +4,12 @@ import axios from 'axios';
 import Header from '../HomePage/Header';
 import { DetailWrapper } from './ProductDetailSC';
 import { BuyModal, OfferModal } from '../../components/modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { SetOfferedProductId } from '../../actions/offerAction';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState([]);
-  const [productOffer, setProductOffer] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [hasBeenOffered, setHasBeenOffered] = useState(false);
@@ -17,6 +18,7 @@ const ProductDetail = () => {
   let history = useHistory();
   const { id } = useParams();
 
+  const dispatch = useDispatch();
   const { offer } = useSelector(state => state)
   // console.log("Redux Offer: ", offer)
   useEffect(() => {
@@ -33,9 +35,7 @@ const ProductDetail = () => {
         .then(res => {
           // console.log("ProductDetail Res: ", res)
           setProduct(res.data)
-        }).catch(err => {
-          console.log(err);
-        })
+        }).catch(err => console.log(err))
     })();
   }, [id])
 
@@ -49,7 +49,16 @@ const ProductDetail = () => {
       },
       body: JSON.stringify({ id: offerID }),
     }).then(res => {
-      console.log("cancelOffer Res: ", res);
+      // console.log("cancelOffer Res: ", res);
+      toast.success('Teklif geri çekildi', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }).catch(err => console.log(err))
   }
 
@@ -84,14 +93,18 @@ const ProductDetail = () => {
                     ?
                     <>
                       {
-                        productOffer && <div className="offer"> <p>Verilen Teklif: <strong>{productOffer} TL</strong></p> </div>
+                        <div className="offer">
+                          {
+                            offer.offerPrice !== 0 && <p>Verilen Teklif: <strong>{offer.offerPrice} TL</strong></p>
+                          }
+                        </div>
                       }
                       <div className="details-btn">
                         <button onClick={() => setShowBuyModal(true)}>Satın Al</button>
                         {
                           (() => {
                             if (offerID) {
-                              return (<button onClick={() => { cancelOffer(); setOfferID("") }}>Teklifi Geri Çek</button>)
+                              return (<button onClick={() => { cancelOffer(); setOfferID(""); dispatch(SetOfferedProductId("", 0)); }}>Teklifi Geri Çek</button>)
                             }
                             if (product.isOfferable) {
                               return (<button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>)
@@ -99,7 +112,7 @@ const ProductDetail = () => {
                           })()
                         }
                         <BuyModal show={showBuyModal} close={() => setShowBuyModal(false)} id={product.id} isSold={() => product.isSold = false} />
-                        <OfferModal show={showOfferModal} close={() => setShowOfferModal(false)} imgUrl={product.imageUrl} title={product.title} price={product.price} id={product.id} offerPrice={() => setProductOffer()} offered={() => setHasBeenOffered(!hasBeenOffered)} />
+                        <OfferModal show={showOfferModal} close={() => setShowOfferModal(false)} imgUrl={product.imageUrl} title={product.title} price={product.price} id={product.id} offered={() => setHasBeenOffered(!hasBeenOffered)} />
                       </div>
                     </>
                     :

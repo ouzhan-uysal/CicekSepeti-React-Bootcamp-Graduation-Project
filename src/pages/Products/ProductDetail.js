@@ -20,9 +20,6 @@ const ProductDetail = () => {
   const { offer } = useSelector(state => state)
   // console.log("Redux Offer: ", offer)
   useEffect(() => {
-    if (offer.offerID) {
-      console.log("OK")
-    }
     setOfferID(offer.offerID);
   }, [offer.offerID])
 
@@ -42,25 +39,24 @@ const ProductDetail = () => {
     })();
   }, [id])
 
-  const cancelOffer = async id => {
-    // FIXME: Fetch
-    fetch(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${id}`, {
+  const cancelOffer = async () => {
+    // Withdraw Offer
+    fetch(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${offerID}`, {
       method: 'DELETE',
       headers: {
         accept: '/*',
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({ id: id }),
+      body: JSON.stringify({ id: offerID }),
     }).then(res => {
       console.log("cancelOffer Res: ", res);
-      return res.json();
-    }).then(json => console.log(json)).catch(err => console.log(err))
+    }).catch(err => console.log(err))
   }
 
   return (
     <>
       <Header />
-      <DetailWrapper>
+      <DetailWrapper id="product-details-container">
         {
           product.length < 8
             ?
@@ -95,7 +91,7 @@ const ProductDetail = () => {
                         {
                           (() => {
                             if (offerID) {
-                              return (<button onClick={() => { cancelOffer(product.id); setOfferID("") }}>Teklifi Geri Çek</button>)
+                              return (<button onClick={() => { cancelOffer(); setOfferID("") }}>Teklifi Geri Çek</button>)
                             }
                             if (product.isOfferable) {
                               return (<button onClick={() => setShowOfferModal(true)}>Teklif Ver</button>)

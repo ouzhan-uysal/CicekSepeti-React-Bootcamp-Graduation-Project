@@ -14,11 +14,12 @@ export const AccountWrapper = styled.div`
     }
   }
   .offer-container {
-    background-color: #fff;
     margin: .5rem 0;
     padding: 1rem;
     display: grid;
+    gap: .5rem;
     .offers-tab {
+      background-color: #fff;
       ul {
         list-style-type: none;
         li {
@@ -35,6 +36,7 @@ export const AccountWrapper = styled.div`
       }
     }
     .offers {
+      background-color: #fff;
       padding: 1em;
       .offer-item {
         display: grid;

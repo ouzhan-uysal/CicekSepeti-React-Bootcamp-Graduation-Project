@@ -1,22 +1,18 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { BuyModalWrapper, OfferModalWrapper } from './modalSC';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { GiveOffer, WithdrawOffer } from '../actions/offerAction';
-// import { SET_PRODUCT_OFFER } from '../actions/actionTypes';
+import { SetOfferedProductId } from '../actions/offerAction';
+import { useDispatch } from 'react-redux';
 
 // TODO: Purchasing processes:
-const PurchaseProduct = async (id, isSold) => {
-  // const dispatch = useDispatch();
+const PurchaseProduct = async (id) => {
   await axios.put(`https://bootcampapi.techcs.io/api/fe/v1/product/purchase/${id}`)
     .then(res => {
       // console.log("Purchase Res: ", res);
     }).catch(err => console.log(err))
 }
 
-export const BuyModal = ({ show, close, id, isSold }) => {
-  // const offer = useSelector(state => state.offer);
-  // console.log("BuyModal Offer: ", offer)
+export const BuyModal = ({ show, close, id }) => {
   if (!show) {
     return null
   }
@@ -36,30 +32,35 @@ export const BuyModal = ({ show, close, id, isSold }) => {
   )
 }
 
-// TODO: Offering processes:
-const OfferProduct = async (id, title, price, offerPrice, offered) => {
-  const newPrice = Number(offerPrice)
-  fetch(`https://bootcampapi.techcs.io/api/fe/v1/product/offer/${id}`, {
-    method: 'POST',
-    headers: {
-      accept: '/*',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify({
-      offeredPrice: newPrice,
-    }),
-  }).then(res => {
-    console.log("Offer Res: ", res);
-    offered = true;
-    // OfferAction(id, title, price, offerPrice);
-    return res.json();
-  }).then(json => console.log(json)).catch(err => console.log(err))
-}
+
 export const OfferModal = ({ show, close, imgUrl, title, price, id, offered }) => {
   const [offerPrice, setOfferPrice] = useState(0);
-  // const offer = useSelector(state => state.offer);
-  // console.log("OfferModal Offer: ", offer);
+  const dispatch = useDispatch();
+
+  // TODO: Offering processes:
+  const OfferProduct = (id, offerPrice) => {
+    fetch(`https://bootcampapi.techcs.io/api/fe/v1/product/offer/${id}`, {
+      method: 'POST',
+      headers: {
+        accept: '/*',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        offeredPrice: Number(offerPrice),
+      }),
+    }).then(res => {
+      // console.log("Offer Res: ", res);
+      return res.json();
+    }).then(json => {
+      console.log(json)
+      if (json.id) {
+        dispatch(SetOfferedProductId(json.id));
+      } else {
+        console.log("ID not found in json.")
+      }
+    }).catch(err => console.log(err))
+  }
 
   if (!show) {
     return null
@@ -98,7 +99,7 @@ export const OfferModal = ({ show, close, imgUrl, title, price, id, offered }) =
               <input type="number" name="offer-radio" value={offerPrice} onChange={(e) => setOfferPrice(Number(e.target.value))} placeholder="Teklif Belirle (TL)" />
             </label>
           </div>
-          <button onClick={() => { OfferProduct(id, title, price, offerPrice, offered); close(); offered(); }}>Onayla</button>
+          <button onClick={() => { OfferProduct(id, offerPrice); close(); offered(); }}>Onayla</button>
         </div>
       </div>
     </OfferModalWrapper>

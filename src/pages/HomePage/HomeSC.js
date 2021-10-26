@@ -12,8 +12,6 @@ export const HomeWrapper = Styled.div`
     max-height: 100%;
   }
   .category-container {
-    display: grid;
-    justify-items: center;
     ul {
       list-style-type: none;
       li {

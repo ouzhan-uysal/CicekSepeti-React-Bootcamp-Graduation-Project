@@ -17,10 +17,11 @@ export const WithdrawOffer = (offerInfo) => {
   })
 }
 
-export const SetOfferedProductId = (offerInfo) => {
-  const dispatch = useDispatch();
-  dispatch({
+export const SetOfferedProductId = (id) => {
+  return {
     type: SET_OFFERED_PRODUCT_ID,
-    payload: offerInfo
-  })
+    payload: {
+      offerID: id
+    }
+  }
 }

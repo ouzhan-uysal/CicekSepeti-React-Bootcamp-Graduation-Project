@@ -5,7 +5,6 @@ const INITIAL_STATE = {
   productID: "",
   price: 0,
   offerPrice: 0,
-  offerID: ""
 }
 
 const offerReducer = (state = INITIAL_STATE, action) => {
@@ -16,7 +15,7 @@ const offerReducer = (state = INITIAL_STATE, action) => {
     case CANCEL_PRODUCT_OFFER:
       return { ...state, state }
     case SET_OFFERED_PRODUCT_ID:
-      return { ...state, offerID: action.payload }
+      return { state, offerID: action.payload.offerID }
     default:
       return { ...state }
   }

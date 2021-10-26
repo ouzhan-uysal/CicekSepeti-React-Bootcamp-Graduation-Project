@@ -61,7 +61,7 @@ export const DetailWrapper = styled.div`
   }
   .details-btn {
     display: grid;
-    grid-template-columns: 1fr 1fr 10%;
+    grid-template-columns: 1fr 1fr;
     gap: 1em;
     white-space:nowrap;
     button {

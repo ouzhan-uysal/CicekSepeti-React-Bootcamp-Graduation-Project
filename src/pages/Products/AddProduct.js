@@ -13,7 +13,7 @@ const AddProduct = () => {
 
   // Input States:
   const [productName, setProductName] = useState("");
-  const [productImgUrl, setProductImgUrl] = useState("");
+  // const [productImgUrl, setProductImgUrl] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [productDescription, setProductDescription] = useState("");
   const [productCategory, setProductCategory] = useState("");
@@ -82,32 +82,33 @@ const AddProduct = () => {
 
   // FIXME: Fetch url from api
   const handleFile = async (e) => {
-    // Fetch Image Url from image
-    // console.log(e.target.files[0]);
-    let file = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-      const fileBinary = e.target.result.split(",")[1]
-      console.log("x2", fileBinary)
-      // fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
-      //   method: 'POST',
-      //   headers: {
-      //     accept: '/*',
-      //     'Content-Type': 'multipart/form-data',
-      //     'Authorization': `Bearer ${localStorage.getItem("token")}`,
-      //   },
-      // })
-      //   .then(res => {
-      //     console.log("File Res: ", res);
-      //     if (res.ok) {
-      //       setProductImgUrl(res.url);
-      //     }
-      //     return res.json();
-      //   })
-      //   .then(data => console.log(data))
-      //   .catch(err => console.log(err))
-    }
+    let file = e.target.files[0]
+    console.log(file)
+    // FIXME:
+    // let reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = (e) => {
+    //   const fileBinary = e.target.result.split(",")[1]
+    //   // console.log(fileBinary)
+    //   fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
+    //     method: 'POST',
+    //     headers: {
+    //       accept: '/*',
+    //       'Content-Type': 'multipart/form-data',
+    //       'Authorization': `Bearer ${localStorage.getItem("token")}`,
+    //     },
+    //     body: JSON.stringify({ file: fileBinary })
+    //   })
+    //     .then(res => {
+    //       console.log("File Res: ", res);
+    //       if (res.ok) {
+    //         setProductImgUrl(res.url);
+    //       }
+    //       return res.json();
+    //     })
+    //     .then(data => console.log(data))
+    //     .catch(err => console.log(err))
+    // }
   }
 
   const createNewProduct = async () => {
@@ -217,7 +218,7 @@ const AddProduct = () => {
             </p>
             <p>PNG ve JPEG Dosya boyutu: max. 100kb</p>
           </div>
-          <button onClick={createNewProduct}>Kaydet</button>
+          <button onClick={() => createNewProduct}>Kaydet</button>
         </div>
       </ProductWrapper>
     </>

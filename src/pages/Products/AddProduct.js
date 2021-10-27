@@ -89,7 +89,7 @@ const AddProduct = () => {
     console.log(file);
     const base64 = await convertBase64(file);
     setBaseImage(base64);
-    // FIXME: 
+    // FIXME: Bu kısımda hata nerede öğren!
     fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
       method: 'POST',
       headers: {

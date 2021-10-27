@@ -16,6 +16,7 @@ const Account = () => {
   const auth = useSelector(state => state.auth);
   // console.log(auth)
 
+  // redirect for non logged in user
   useEffect(() => {
     localStorage.getItem("email") || history.push("/login")
   }, [history])

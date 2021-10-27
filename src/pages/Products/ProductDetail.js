@@ -29,6 +29,7 @@ const ProductDetail = () => {
     localStorage.getItem("email") || history.push("/login")
   }, [history])
 
+  // fetch information of selected product
   useEffect(() => {
     (async () => {
       await axios.get(`https://bootcampapi.techcs.io/api/fe/v1/product/${id}`)
@@ -39,8 +40,8 @@ const ProductDetail = () => {
     })();
   }, [id])
 
+  // Withdraw Offer
   const cancelOffer = async () => {
-    // Withdraw Offer
     fetch(`https://bootcampapi.techcs.io/api/fe/v1/account/cancel-offer/${offerID}`, {
       method: 'DELETE',
       headers: {

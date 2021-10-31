@@ -3,6 +3,12 @@
 
 Live Demo: https://cicek-sepeti-react-bootcamp-graduation-project.vercel.app
 
+## Desktop Performance:
+![image](https://user-images.githubusercontent.com/56503078/139584733-a9e17d6e-4cde-416d-9361-baee6697a00c.png)
+
+## Mobil Performance: 
+![image](https://user-images.githubusercontent.com/56503078/139584752-f5cba0b7-1fcf-473f-aa0c-c211a4e8de41.png)
+
 # Getting Started with Create React App
 
 ## Required Libraries

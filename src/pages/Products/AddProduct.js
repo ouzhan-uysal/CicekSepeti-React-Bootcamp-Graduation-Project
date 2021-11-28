@@ -84,30 +84,29 @@ const AddProduct = () => {
 
   // Get image url
   const handleFile = async (e) => {
-    console.log("Burada img url'i fetch edemediğim için ürün oluştururken önceden kullandığım bir resmin görüntüsünü yolladım.");
     const file = e.target.files[0];
-    console.log(file);
+    // show image
     const base64 = await convertBase64(file);
     setBaseImage(base64);
-    // FIXME: Bu kısımda hata nerede öğren!
-    fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', {
+
+    const file2 = new FormData();
+    file2.append('file2', file)
+
+    // console.log(file);
+    // FIXME: Bu kısımda neden aldığım cevapta image url gelmiyor araştır!
+    fetch('https://bootcampapi.techcs.io/api/fe/v1/file/upload/image', file, {
       method: 'POST',
       headers: {
-        accept: '/*',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: { file: base64 },
-    })
-      .then(res => {
-        console.log("File Res: ", res);
-        if (res.ok) {
-          setProductImgUrl(res.url);
-        }
-        return res.json();
-      })
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    }).then(res => {
+      console.log("Res: ", res)
+      if (res.ok) {
+        setProductImgUrl(res.url);
+        console.log("Response Image Url: ", productImgUrl);
+      }
+      return res.json();
+    }).then(json => console.log("Json", json)).catch(err => console.log(err))
   }
 
   const convertBase64 = (file) => {
@@ -260,11 +259,11 @@ const AddProduct = () => {
                   <p>Yüklemek istediğiniz dosyayı seçiniz.
                     <input id="product-file" type="file" accept="image/png, image/jpeg" onChange={handleFile}></input>
                   </p>
+                  <p>PNG ve JPEG Dosya boyutu: max. 100kb</p>
                 </>
                 :
                 <img className="upload-img" src={baseImage} alt="uploading-file" />
             }
-            <p>PNG ve JPEG Dosya boyutu: max. 100kb</p>
           </div>
           <button onClick={createNewProduct}>Kaydet</button>
         </div>
